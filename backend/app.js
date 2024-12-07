@@ -10,6 +10,13 @@ const cookieParser = require('cookie-parser');
 const { environment } = require('./config');
 const isProduction = environment === 'production';
 
+// backend/app.js
+const routes = require('./routes');
+
+// ...
+
+
+
 const app = express();
 
 app.use(morgan('dev'));
@@ -39,3 +46,10 @@ if (!isProduction) {
       }
     })
   );
+
+
+
+
+  app.use(routes); // Connect all the routes
+
+  module.exports = app;
