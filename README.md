@@ -2,7 +2,7 @@
 
 ## Database Schema Design
 
-![db-schema](/Users/myrandathompson/Desktop/project/authMeProject/images/schema.png)
+![db-schema](images/schema.png)
 
 ## API Documentation
 
