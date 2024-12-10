@@ -72,12 +72,8 @@ Returns the information about the current user that is logged in.
     ```
 
 * Successful Response when there is no logged in user
-  * Status Code: 200
-  * Headers:
-    * Content-Type: application/json
-  * Body:
-
-    ```json
+  * Status Code: 200pwd
+  on
     {
       "user": null
     }
