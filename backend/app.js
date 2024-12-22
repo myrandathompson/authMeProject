@@ -20,7 +20,7 @@ const app = express();
 const usersRouter = require('./routes/api/users');
 
 const spotsRouter = require('./routes/api/spots');
-
+app.use(cookieParser());
 app.use('/api/spots', spotsRouter);
 
 
@@ -31,7 +31,7 @@ app.use(restoreUser);
 require('express-async-errors');
 app.use(morgan('dev'));
 
-app.use(cookieParser());
+
 app.use(express.json());
 
 
