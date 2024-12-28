@@ -8,8 +8,6 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-
-
   User.init(
     {
       firstName: {
@@ -70,4 +68,3 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
   return User;
-};

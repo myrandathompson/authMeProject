@@ -2,8 +2,9 @@ const express = require('express');
 const { Op } = require('sequelize');
 const bcrypt = require('bcryptjs');
 
-const { setTokenCookie, restoreUser } = require('../../utils/auth');
-const { User } = require('../../db/models');
+const { setTokenCookie, restoreUser, requireAuth } = require('../utils/auth');
+
+const { User } = require('../db/models');
 
 
 
@@ -11,12 +12,6 @@ const { User } = require('../../db/models');
 // backend/routes/api/session.js
 
 const router = express.Router();// backend/routes/api/session.js
-
-
-
-module.exports = router;
-
-
 
 // backend/routes/api/session.js
 // ...
@@ -57,5 +52,35 @@ router.post(
       });
     }
   );
+
+
+// const { requireAuth } = require('../../utils/auth'); // Adjust this path based on your auth middleware setup
+// const { User } = require('../../db/models'); // Adjust the model path based on your project structure
+
+
+
+// GET /api/session - Get the Current User
+router.get('/', async (req, res) => {
+    const { user } = req;
+
+    if (user) {
+        // Fetch user details (if needed) and respond
+        const safeUser = {
+            id: user.id,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            username: user.username
+        };
+        return res.json({ user: safeUser });
+    } else {
+        // No user logged in, respond with user: null
+        return res.json({ user: null });
+    }
+});
+
+
+
+
 
 module.exports = router;
