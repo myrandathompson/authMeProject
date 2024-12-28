@@ -1,16 +1,16 @@
 'use strict';
 
-const { User } = require('../models');
 const bcrypt = require("bcryptjs");
 
 let options = {};
 if (process.env.NODE_ENV === 'production') {
-  options.schema = process.env.SCHEMA;  // define your schema in options object
+  options.schema = process.env.SCHEMA;  // Define schema for production database
 }
 
 module.exports = {
-  async up (queryInterface, Sequelize) {
-    await User.bulkCreate([
+  async up(queryInterface, Sequelize) {
+    options.tableName = 'Users'; // Specify the table to seed data into
+    await queryInterface.bulkInsert(options, [
       {
         email: 'demo@user.io',
         username: 'Demo-lition',
@@ -26,13 +26,13 @@ module.exports = {
         username: 'FakeUser2',
         hashedPassword: bcrypt.hashSync('password3')
       }
-    ], { validate: true });
+    ], {});
   },
 
-  async down (queryInterface, Sequelize) {
-    options.tableName = 'Users';
+  async down(queryInterface, Sequelize) {
+    options.tableName = 'Users'; // Specify the table to delete data from
     const Op = Sequelize.Op;
-    return queryInterface.bulkDelete(options, {
+    await queryInterface.bulkDelete(options, {
       username: { [Op.in]: ['Demo-lition', 'FakeUser1', 'FakeUser2'] }
     }, {});
   }
