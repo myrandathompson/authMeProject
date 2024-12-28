@@ -1,5 +1,5 @@
 const express = require('express');
-require('express-async-errors');
+
 const morgan = require('morgan');
 const cors = require('cors');
 const csurf = require('csurf');
@@ -12,19 +12,31 @@ const { ValidationError } = require('sequelize');
 const { environment } = require('./config');
 const isProduction = environment === 'production';
 
+const sessionRouter = require('./routes/api/session');
 // backend/app.js
 const routes = require('./routes');
-
-// ...
-
-
-
+const { restoreUser } = require('./utils/auth');
 const app = express();
+const usersRouter = require('./routes/api/users');
 
+const spotsRouter = require('./routes/api/spots');
+app.use(cookieParser());
+app.use('/api/spots', spotsRouter);
+
+
+
+app.use('/api/users', usersRouter);
+
+app.use(restoreUser);
+require('express-async-errors');
 app.use(morgan('dev'));
 
-app.use(cookieParser());
+
 app.use(express.json());
+
+
+
+app.use('/api/session', sessionRouter);
 
 if (!isProduction) {
     // enable cors only in development
