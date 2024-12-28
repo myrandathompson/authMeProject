@@ -8,6 +8,11 @@ module.exports = {
     logQueryParameters: true,
     typeValidation: true
   },
+
+  test: {
+    dialect: 'sqlite',
+    storage: ':memory:',
+  },
   production: {
     use_env_variable: 'DATABASE_URL',
     dialect: 'postgres',
