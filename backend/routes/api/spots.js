@@ -101,7 +101,7 @@ router.get('/:id', async (req, res, next) => {
       });
   
       const numReviews = reviews.length;
-      const avgStarRating =
+      const avgRating =
         numReviews > 0
           ? reviews.reduce((acc, review) => acc + review.stars, 0) / numReviews
           : null;
@@ -122,7 +122,7 @@ router.get('/:id', async (req, res, next) => {
         createdAt: spot.createdAt,
         updatedAt: spot.updatedAt,
         numReviews,
-        avgStarRating,
+        avgRating,
         SpotImages: spot.SpotImages,
         Owner: spot.Owner,
       };
