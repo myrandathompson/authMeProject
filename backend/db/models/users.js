@@ -1,82 +1,81 @@
 'use strict';
-
-let options = {};
-const { Model, Validator } = require('sequelize');
-const bcrypt = require('bcrypt');
+const bcrypt = require("bcryptjs");
+const { Model, Validator } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
-    /**
-     * Associations for the User model
-     */
-    static associate(models) {
-      // Example association:
-      // User.hasMany(models.Post, { foreignKey: 'userId' });
+    //define instance methods
+    toSafeObject() {
+      const { id, firstName, lastName, username, email } = this; // context will be the User instance
+      return { id, firstName, lastName, username, email };
     }
-
-    /**
-     * Instance method to validate a password
-     */
-    async validatePassword(password) {
-      return bcrypt.compare(password, this.hashedPassword);
+    validatePassword(password) {
+      return bcrypt.compareSync(password, this.hashedPassword.toString());
     }
-
-    /**
-     * Static method to find a user by email or username
-     */
-    static async findByLogin(login) {
-      return await User.findOne({
+    static getCurrentUserById(id) {
+      return User.scope("currentUser").findByPk(id);
+    }
+    static async login({ credential, password }) {
+      const { Op } = require("sequelize");
+      const user = await User.scope("loginUser").findOne({
         where: {
-          [sequelize.Sequelize.Op.or]: [
-            { email: login },
-            { username: login },
-          ],
+          [Op.or]: {
+            username: credential,
+            email: credential,
+          },
         },
       });
+      if (user && user.validatePassword(password)) {
+        return await User.scope("currentUser").findByPk(user.id);
+      }
+    }
+    static async signup({ firstName, lastName, username, email, password }) {
+      const hashedPassword = bcrypt.hashSync(password);
+      const user = await User.create({
+        firstName,
+        lastName,
+        username,
+        email,
+        hashedPassword,
+      });
+      return await User.scope("currentUser").findByPk(user.id);
+    }
+    static associate(models) {
+      // define association here
+      User.hasMany(models.Spot, {
+        foreignKey: "ownerId",
+        
+      });
+      
+      User.hasMany(models.Review, { foreignKey: 'userId' })
+      User.hasMany(models.Booking, { foreignKey: 'userId' })
     }
   }
-
   User.init(
     {
-      firstName: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-          len: [2, 30],
-        },
-      },
-      lastName: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-          len: [2, 30],
-        },
-      },
-    //   ownerId: {
-    //     type: DataTypes.INTEGER,
-    //     allowNull: false,
-    //     unique: true,
-    //     validate: {
-    //       isNumeric: true,
-    //     },
-    //   },
       username: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,
         validate: {
           len: [4, 30],
           isNotEmail(value) {
             if (Validator.isEmail(value)) {
-              throw new Error('Username cannot be an email.');
+              throw new Error("Cannot be an email.");
             }
           },
         },
       },
+      firstName: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      lastName: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
       email: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,
         validate: {
           len: [3, 256],
           isEmail: true,
@@ -92,34 +91,21 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: 'User',
-
-      // Scopes for common queries
+      modelName: "User",
       defaultScope: {
-        attributes: { exclude: ['hashedPassword'] },
+        attributes: {
+          exclude: ["hashedPassword", "email", "createdAt", "updatedAt"],
+        },
       },
       scopes: {
-        withPassword: {
+        currentUser: {
+          attributes: { exclude: ["hashedPassword"] },
+        },
+        loginUser: {
           attributes: {},
         },
       },
     }
   );
-
-  /**
-   * Hook to hash password before saving
-   */
-  User.beforeCreate(async (user) => {
-    if (user.hashedPassword) {
-      user.hashedPassword = await bcrypt.hash(user.hashedPassword, 10);
-    }
-  });
-
-  User.beforeUpdate(async (user) => {
-    if (user.changed('hashedPassword')) {
-      user.hashedPassword = await bcrypt.hash(user.hashedPassword, 10);
-    }
-  }, options);
-
   return User;
 };
