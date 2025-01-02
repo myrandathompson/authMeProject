@@ -27,12 +27,12 @@ module.exports = {
         unique: true,
       },
       email: {
-        type: Sequelize.STRING(256),
+        type: Sequelize.STRING(30),
         allowNull: false,
         unique: true,
       },
       hashedPassword: {
-        type: Sequelize.STRING.BINARY,
+        type: Sequelize.STRING,
         allowNull: false,
       },
       createdAt: {
@@ -45,11 +45,10 @@ module.exports = {
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
       },
-    }, options);
+    });
   },
 
-  async down(queryInterface, Sequelize) {
-    options.tableName = "Users";
-    await queryInterface.dropTable(options);
-  }
+  down: async (queryInterface, Sequelize) => {
+    await queryInterface.dropTable('Users');
+  },
 };
