@@ -17,7 +17,7 @@ const sessionRouter = require('./routes/api/session');
 const routes = require('./routes');
 const { restoreUser } = require('./utils/auth');
 const app = express();
-const usersRouter = require('./routes/api/users');
+const userRouter = require('./routes/api/user');
 
 const spotsRouter = require('./routes/api/spots');
 app.use(cookieParser());
@@ -25,7 +25,7 @@ app.use('/api/spots', spotsRouter);
 
 
 
-app.use('/api/users', usersRouter);
+app.use('/api/user', userRouter);
 
 app.use(restoreUser);
 require('express-async-errors');

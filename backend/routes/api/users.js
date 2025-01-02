@@ -1,4 +1,9 @@
-const express = require('express')
+const express = require('express');
+
+const jwt = require('jsonwebtoken');
+const { User } = require('../../db/models'); // Import the User model
+const { authenticateUser } = require('../../utils/auth'); // Custom middleware for authentication
+
 const router = express.Router();
 
 const { check } = require('express-validator');
@@ -7,7 +12,7 @@ const { handleValidationErrors } = require('../../utils/validation');
 const bcrypt = require('bcryptjs');
 
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
-const { User } = require('../../db/models');
+
 
 
 const validateSignup = [
@@ -36,14 +41,12 @@ router.post(
     '/',
     validateSignup,
     async (req, res) => {
-      const { firstName, lastName, email, password, username } = req.body;
+      const { email, password, username } = req.body;
       const hashedPassword = bcrypt.hashSync(password);
       const user = await User.create({ email, username, hashedPassword });
   
       const safeUser = {
         id: user.id,
-        firstName: user.firstName,
-        lastName: user.lastName,
         email: user.email,
         username: user.username,
       };
@@ -79,50 +82,108 @@ router.post('/', async (req, res, next) => {
     // Check if email or username already exists
     const existingUser = await User.findOne({
       where: {
-        [Op.or]: [{ email }, { username }],
+        [User.sequelize.Op.or]: [{ email }, { username }],
       },
     });
 
     if (existingUser) {
-      const conflictErrors = {};
-      if (existingUser.email === email) conflictErrors.email = 'User with that email already exists';
-      if (existingUser.username === username) conflictErrors.username = 'User with that username already exists';
-
-      return res.status(500).json({
-        message: 'User already exists',
-        errors: conflictErrors,
-      });
+      return res.status(400).json({ message: 'Email or username already exists' });
     }
 
     // Hash the password
-    const passwordHash = bcrypt.hashSync(password, 10);
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create the new user
-    const user = await User.create({
+    // Create the user
+    const newUser = await User.create({
       firstName,
       lastName,
-      email,
+      ownerId,
       username,
-      passwordHash,
+      email,
+      hashedPassword,
     });
 
-    // Set the token cookie
-    const token = setTokenCookie(res, user);
+    // Generate a JWT token
+    const token = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-    // Return the user information
     return res.status(201).json({
-      user: {
-        id: user.id,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-        username: user.username,
-      },
+      id: newUser.id,
+      firstName: newUser.firstName,
+      lastName: newUser.lastName,
+      email: newUser.email,
+      username: newUser.username,
+      token,
     });
-  } catch (error) {
-    next(error);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: 'Server error' });
   }
 });
 
+/**
+ * @route POST /api//login
+ * @desc Authenticate a user
+ * @access Public
+ */
+router.post('/login', async (req, res) => {
+  const { login, password } = req.body;
+
+  try {
+    // Find the user by email or username
+    const user = await User.findByLogin(login);
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Validate the password
+    const isValidPassword = await user.validatePassword(password);
+
+    if (!isValidPassword) {
+      return res.status(401).json({ message: 'Invalid credentials' });
+    }
+
+    // Generate a JWT token
+    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+    return res.json({
+      id: user.id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      username: user.username,
+      token,
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: 'Server error' });
+  }
+});
+
+/**
+ * @route GET /api//current
+ * @desc Get the current user's information
+ * @access Private
+ */
+router.get('/current', authenticateUser, async (req, res) => {
+  try {
+    const user = await User.findByPk(req.user.id);
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    return res.json({
+      id: user.id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      username: user.username,
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: 'Server error' });
+  }
+});
 
 module.exports = router;
