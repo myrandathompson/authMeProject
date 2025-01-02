@@ -19,9 +19,9 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       // Spots.hasMany(models.Review, { foreignKey: 'spotId', onDelete: "CASCADE", hooks: true })
-      // Spots.hasMany(models.Booking, { foreignKey: 'spotId', onDelete: "CASCADE", hooks: true })
-      // Spots.hasMany(models.SpotImage, { foreignKey: 'spotId', onDelete: "CASCADE", hooks: true })
-      // Spots.belongsTo(models.User, { as: 'Owner', foreignKey: 'ownerId' })
+      Spots.hasMany(models.Bookings, { foreignKey: 'spotId', onDelete: "CASCADE", hooks: true })
+      Spots.hasMany(models.SpotImage, { foreignKey: 'spotId', onDelete: "CASCADE", hooks: true })
+      Spots.belongsTo(models.User, { as: 'Owner', foreignKey: 'ownerId' })
     }
   }
   Spots.init({
@@ -67,41 +67,41 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'Spots',
 
-    // scopes: {
-    //   getAllSpots() {
-    //     return {
-    //       attributes: [
-    //         'id',
-    //         'ownerId',
-    //         'address',
-    //         'city',
-    //         'state',
-    //         'country',
-    //         'lat',
-    //         'lng',
-    //         'name',
-    //         'description',
-    //         'price',
-    //         'createdAt',
-    //         'updatedAt',
-    //         [
-    //           Sequelize.literal(
-    //             `(SELECT ROUND(AVG(stars), 1) FROM ${schema ? `"${schema}"."Reviews"` : 'Reviews'
-    //             } WHERE "Reviews"."spotId" = "Spot"."id")`
-    //           ),
-    //           'avgRating',
-    //         ],
-    //         [
-    //           Sequelize.literal(
-    //             `(SELECT url FROM ${schema ? `"${schema}"."SpotImages"` : 'SpotImages'
-    //             } WHERE "SpotImages"."spotId" = "Spot"."id" AND "SpotImages"."preview" = true LIMIT 1)`
-    //           ),
-    //           'previewImage',
-    //         ],
-    //       ],
-    //     };
-    //   },
-    // }
+    scopes: {
+      getAllSpots() {
+        return {
+          attributes: [
+            'id',
+            'ownerId',
+            'address',
+            'city',
+            'state',
+            'country',
+            'lat',
+            'lng',
+            'name',
+            'description',
+            'price',
+            'createdAt',
+            'updatedAt',
+            [
+              Sequelize.literal(
+                `(SELECT ROUND(AVG(stars), 1) FROM ${schema ? `"${schema}"."Reviews"` : 'Reviews'
+                } WHERE "Reviews"."spotId" = "Spot"."id")`
+              ),
+              'avgRating',
+            ],
+            [
+              Sequelize.literal(
+                `(SELECT url FROM ${schema ? `"${schema}"."SpotImages"` : 'SpotImages'
+                } WHERE "SpotImages"."spotId" = "Spot"."id" AND "SpotImages"."preview" = true LIMIT 1)`
+              ),
+              'previewImage',
+            ],
+          ],
+        };
+      },
+    }
   
   });
   return Spots;
