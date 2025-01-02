@@ -157,7 +157,7 @@ user's information.
 * Require Authentication: false
 * Request
   * Method: POST
-  * Route path: /api/users
+  * Route path: /api/user
   * Headers:
     * Content-Type: application/json
   * Body:
