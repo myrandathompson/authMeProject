@@ -1,10 +1,16 @@
 'use strict';
 const {
-  Model
+  Model,
+  Sequelize
 } = require('sequelize');
 
+let schema;
+if (process.env.NODE_ENV === 'production') {
+  schema = process.env.SCHEMA;
+}
+
 module.exports = (sequelize, DataTypes) => {
-  class spots extends Model {
+  class Spots extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -12,96 +18,91 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      // Spots.hasMany(models.Review, { foreignKey: 'spotId', onDelete: "CASCADE", hooks: true })
+      // Spots.hasMany(models.Booking, { foreignKey: 'spotId', onDelete: "CASCADE", hooks: true })
+      // Spots.hasMany(models.SpotImage, { foreignKey: 'spotId', onDelete: "CASCADE", hooks: true })
+      // Spots.belongsTo(models.User, { as: 'Owner', foreignKey: 'ownerId' })
     }
   }
-  spots.init({
+  Spots.init({
     ownerId: {
       type: DataTypes.INTEGER,
-      unique:true,
       allowNull: false,
     },
     address: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        len: [2, 30],
-      }
+      allowNull: false
     },
     city: {
       type: DataTypes.STRING,
-      allowNull:false,
-      validate: {
-        len: [2, 30],
-      }
+      allowNull: false
     },
     state: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validator: {
-        len: [2, 30],
-      }
+      allowNull: false
     },
     country: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validator: {
-        len: [2, 30],
-      }
+      allowNull: false
     },
     lat: {
       type: DataTypes.DECIMAL,
-      allowNull: false,
-      validator: {
-        max: 90,
-        min: -90,
-      }
     },
     lng: {
       type: DataTypes.DECIMAL,
-      allowNull: false,
-      validator: {
-        max: 90,
-        min: -90,
-      }
     },
     name: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validator: {
-        len: [2, 50],
-      }
+      allowNull: false
     },
     description: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validator: {
-        notEmpty: true,
-        }
+      allowNull: false
     },
     price: {
       type: DataTypes.DECIMAL,
-      allowNull: false,
-      validator: {
-        isDecimal: true,
-        min: 1,
-        isNumeric: true,
-        }
-      },
-    avgRating: {
-      type: DataTypes.DECIMAL,
-      allowNull: false,
-      validator: {
-        min: 0,
-        max: 5,
-        isNumeric: true,
-      },
-
+      allowNull: false
     },
-  },  
-  {
+  }, {
     sequelize,
-    modelName: 'spots',
-  }
-);
-  return spots;
+    modelName: 'Spots',
+
+    // scopes: {
+    //   getAllSpots() {
+    //     return {
+    //       attributes: [
+    //         'id',
+    //         'ownerId',
+    //         'address',
+    //         'city',
+    //         'state',
+    //         'country',
+    //         'lat',
+    //         'lng',
+    //         'name',
+    //         'description',
+    //         'price',
+    //         'createdAt',
+    //         'updatedAt',
+    //         [
+    //           Sequelize.literal(
+    //             `(SELECT ROUND(AVG(stars), 1) FROM ${schema ? `"${schema}"."Reviews"` : 'Reviews'
+    //             } WHERE "Reviews"."spotId" = "Spot"."id")`
+    //           ),
+    //           'avgRating',
+    //         ],
+    //         [
+    //           Sequelize.literal(
+    //             `(SELECT url FROM ${schema ? `"${schema}"."SpotImages"` : 'SpotImages'
+    //             } WHERE "SpotImages"."spotId" = "Spot"."id" AND "SpotImages"."preview" = true LIMIT 1)`
+    //           ),
+    //           'previewImage',
+    //         ],
+    //       ],
+    //     };
+    //   },
+    // }
+  
+  });
+  return Spots;
 };
