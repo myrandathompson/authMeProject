@@ -77,7 +77,7 @@ router.put('/:bookingId', requireAuth, async (req, res, next) => {
   let endDateData = new Date(endDate);
 
   // Error for editing end date before start date
-  /// STILL NEED TO SOLVE THIS
+  ///doesn't work
   if (endDateData < startDateData) {
     const err = new Error("endDate cannot come before startDate");
     err.status = 400;
@@ -115,7 +115,7 @@ router.put('/:bookingId', requireAuth, async (req, res, next) => {
     let existingBookingEndDate = bookingsArr[i].endDate;
 
     //check if NEW start date falls between start and end date. Throw error if so.
-    // if (startDateData > )
+    
     if (
       startDateData >= existingBookingStartDate &&
       startDateData <= existingBookingEndDate
