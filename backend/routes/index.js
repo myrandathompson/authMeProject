@@ -1,30 +1,12 @@
-// backend/routes/index.js
 const express = require('express');
 const router = express.Router();
-
-// backend/routes/index.js
-// ...
 const apiRouter = require('./api');
-const sessionRouter = require('./session');
+// const sessionRouter = require('../../session');
 
+router.use('/api', apiRouter);
 
 const { setTokenCookie } = require('../utils/auth.js');
 const { User } = require('../db/models');
-router.get('/set-token-cookie', async (_req, res) => {
-  const user = await User.findOne({
-    where: {
-      username: 'Demo-lition'
-    }
-  });
-  setTokenCookie(res, user);
-  return res.json({ user: user });
-});
-
-router.get('/hello/world', function(req, res) {
-  res.cookie('XSRF-TOKEN', req.csrfToken());
-  res.send('Hello World!');
-});
-
 
 // backend/routes/index.js
 // ...
@@ -47,11 +29,11 @@ router.get(
     return res.json(req.user);
   }
 );
-  router.use('/api', apiRouter);
+ 
   // ...
 
 
-  router.use('/session', sessionRouter);
+  // router.use('/session', sessionRouter);
   
   
 module.exports = router;
