@@ -147,7 +147,7 @@ router.post('/:spotId/bookings', requireAuth, async (req, res, next) => {
   const { startDate, endDate } = req.body
   let startDateData = new Date(startDate)
   let endDateData = new Date(endDate)
-  // let endDateMS = endDate.toDateString();
+  
 
   if (endDateData.getTime() - startDateData.getTime() < 0) {
      const err = new Error("endDate cannot be on or before startDate");
@@ -170,7 +170,7 @@ router.post('/:spotId/bookings', requireAuth, async (req, res, next) => {
     let existingBookingEndDate = bookingsArr[i].endDate
 
     //check if NEW start date falls between start and end date. Throw error if so.
-    // if (startDateData > )
+    
     if (startDateData >= existingBookingStartDate && startDateData <= existingBookingEndDate) {
       const err = new Error("Sorry, this spot is already booked for the specified dates");
       err.status = 403;
@@ -488,8 +488,7 @@ router.get('/', async (req, res, next) => {
   //add pagination
   let { page = 1, size = 20 } = req.query;
   let pagination = {};
-  // if (!page) page = 1;
-  // if (!size) size = 20;
+  
 
   //page and size restrictions
   if (page < 1) {
@@ -513,8 +512,7 @@ return next(err);
   }
 
 
-  // let allSpots = await Spot.findAll()
-  //   res.json(allSpots)
+  
 let yourSpots = await Spot.findAll();
 let spotsList = [];
 let previewImgArr = [];
