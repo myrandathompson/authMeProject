@@ -2,7 +2,7 @@
 
 ## Database Schema Design
 
-images/schema.png
+/Users/myrandathompson/Desktop/project/authMeProject/images/schema.png
 
 
 ## API Documentation
