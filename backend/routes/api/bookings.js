@@ -60,7 +60,6 @@ const validateBookingDates = [
     handleValidationErrors
 ];
 
-<<<<<<< HEAD
 router.put('/:bookingId', requireAuth, validateBookingDates, async(req, res, next)=> {
     const updatedBooking = await Booking.findByPk(req.params.bookingId);
     //Error response: Couldn't find a Booking with the specified id
@@ -69,77 +68,6 @@ router.put('/:bookingId', requireAuth, validateBookingDates, async(req, res, nex
         err.title = "Not Found";
         err.status = 404;
         return next(err);
-=======
-  //if booking id doesn't exist throw error
-  if (!booking) {
-    const err = new Error("Booking couldn't be found");
-    err.status = 404;
-    next(err);
-  }
-
-  //Must be owner of booking in order to update booking
-  let userIdNum = booking.toJSON().userId;
-  if (userIdNum !== req.user.id) {
-    res.status(400);
-    return res.json({ message: "Must be owner of Spot to update spot" });
-  }
-
-  //pull out existing start and end date
-  const { startDate, endDate } = req.body;
-  let startDateData = new Date(startDate);
-  let endDateData = new Date(endDate);
-
-  // Error for editing end date before start date
-  ///doesn't work
-  if (endDateData < startDateData) {
-    const err = new Error("endDate cannot come before startDate");
-    err.status = 400;
-    next(err);
-    return;
-  }
-
-  //Error for attempting to edit a past booking
-  //can't delete booking that is in the past
-  let bookingObj = booking.toJSON();
-  let currentTimeMS = Date.now();
-  let endTime = bookingObj.endDate;
-  let endTimeMS = endTime.getTime();
-
-  let dateCalc = endTimeMS - currentTimeMS;
-
-  if (dateCalc < 0) {
-    const err = new Error("Past bookings can't be modified");
-    err.status = 403;
-    next(err);
-    return;
-  }
-  //Error for if new dates have a booking conflict
-  //Time range must be open (aka no overlapping booking date)
-  let spotBookings = await Spot.findByPk(bookingObj.spotId, {
-    include: { model: Booking },
-  });
-
-  let spotBookingsObj = spotBookings.toJSON();
-  let bookingsArr = spotBookingsObj.Bookings;
-
-  //loop through all bookings
-  for (i = 0; i < bookingsArr.length; i++) {
-    let existingBookingStartDate = bookingsArr[i].startDate;
-    let existingBookingEndDate = bookingsArr[i].endDate;
-
-    //check if NEW start date falls between start and end date. Throw error if so.
-    
-    if (
-      startDateData >= existingBookingStartDate &&
-      startDateData <= existingBookingEndDate
-    ) {
-      const err = new Error(
-        "Sorry, this spot is already booked for the specified dates"
-      );
-      err.status = 403;
-      next(err);
-      return;
->>>>>>> b4f3700d9167215ca92952f8aa546bb50f5362dd
     }
     //not your booking, can not update it
     if (req.user.id !== updatedBooking.userId) {
