@@ -1,8 +1,8 @@
-# `<name of application here>`
+# authMe
 
 ## Database Schema Design
 
-`<insert database schema design here>`
+images/schema.png
 
 ## API Documentation
 
