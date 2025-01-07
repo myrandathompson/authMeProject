@@ -19,7 +19,8 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: "Spot"
+          model: "Spot",
+          key: 'id'
         },
         onDelete: "CASCADE",
       },
@@ -27,7 +28,8 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: "User"
+          model: "User",
+          key: 'id',
         },
         onDelete: "CASCADE",
       },
@@ -36,7 +38,7 @@ module.exports = {
         allowNull: false,
       },
       stars: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.DECIMAL,
         allowNull: false,
       },
       createdAt: {
