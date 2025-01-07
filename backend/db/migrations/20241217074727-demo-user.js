@@ -4,9 +4,11 @@ let options = {};
 if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA;  // define your schema in options object
 }
+
+
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Users', {
+    await queryInterface.createTable('User', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -24,15 +26,26 @@ module.exports = {
       username: {
         type: Sequelize.STRING(30),
         allowNull: false,
-        unique: true,
+        validate: {
+          len: [4, 30],
+          isNOTEmail(value) {
+            if (Validator.isEmail(value)) {
+              throw new Error("Cannot be an email")
+            }
+          }
+        }
       },
       email: {
-        type: Sequelize.STRING(30),
+        type: Sequelize.STRING(256),
         allowNull: false,
         unique: true,
+        validate: {
+          len: [3, 256],
+          isEmail: true
+        }
       },
       hashedPassword: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING.BINARY,
         allowNull: false,
       },
       createdAt: {
@@ -45,10 +58,11 @@ module.exports = {
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
       },
-    });
+    }, options);
   },
 
-  down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('Users');
-  },
+  async down (queryInterface, Seqelize) {
+    options.tableName = 'User';
+    return queryInterface.dropTable(options);
+  }
 };

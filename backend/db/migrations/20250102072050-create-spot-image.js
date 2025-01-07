@@ -8,24 +8,33 @@ if (process.env.NODE_ENV === 'production') {
 
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('SpotImages', {
+    await queryInterface.createTable('SpotImage', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      url: {
-        type: Sequelize.STRING,
-        allowNull: false
-      },
       spotId: {
         type: Sequelize.INTEGER,
-        references: { model: 'Spots'},
-        allowNull: false
+        allowNull: false,
+        references: { 
+          model: 'Spot',
+          key: 'id',
+        },
+        onDelete: 'CASCADE',  
+      },
+      url: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        validate: {
+          isUrl: true,
+        },
       },
       preview: {
-        type: Sequelize.BOOLEAN
+        type: Sequelize.BOOLEAN,
+        allowNull: false, 
+        
       },
       createdAt: {
         allowNull: false,
@@ -40,6 +49,7 @@ module.exports = {
     }, options);
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('SpotImages', options);
+    options.tableName = 'SpotImage';
+    return queryInterface.dropTable(options);
   }
 };

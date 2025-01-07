@@ -4,13 +4,10 @@ const {
   Sequelize
 } = require('sequelize');
 
-let schema;
-if (process.env.NODE_ENV === 'production') {
-  schema = process.env.SCHEMA;
-}
+
 
 module.exports = (sequelize, DataTypes) => {
-  class Spots extends Model {
+  class Spot extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -18,16 +15,39 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      // Spots.hasMany(models.Review, { foreignKey: 'spotId', onDelete: "CASCADE", hooks: true })
-      Spots.hasMany(models.Bookings, { foreignKey: 'spotId', onDelete: "CASCADE", hooks: true })
-      Spots.hasMany(models.SpotImage, { foreignKey: 'spotId', onDelete: "CASCADE", hooks: true })
-      Spots.belongsTo(models.User, { as: 'Owner', foreignKey: 'ownerId' })
+      Spot.belongsTo(models.User, {
+        foreignKey: 'ownerId',
+        onDelete: 'CASCADE'
+      });
+
+      Spot.hasMany(models.SpotImage, {
+        foreignKey: 'spotId',
+        onDelete: 'CASCADE',
+        hooks: true
+      });
+
+      Spot.hasMany(models.Booking, {
+        foreignKey: 'spotId',
+        onDelete: 'CASCADE',
+        hooks: true
+      });
+
+      Spot.hasMany(models.Review, {
+        foreignKey: 'spotId',
+        onDelete: 'CASCADE',
+        hooks: true
+      })
     }
   }
-  Spots.init({
+  Spot.init({
     ownerId: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      references: {
+        model: 'User',
+        key: 'id',
+      },
+      onDelete: 'CASCADE',
     },
     address: {
       type: DataTypes.STRING,
@@ -47,9 +67,12 @@ module.exports = (sequelize, DataTypes) => {
     },
     lat: {
       type: DataTypes.DECIMAL,
+      
     },
     lng: {
       type: DataTypes.DECIMAL,
+      
+     
     },
     name: {
       type: DataTypes.STRING,
@@ -64,45 +87,10 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
   }, {
+    
     sequelize,
-    modelName: 'Spots',
-
-    scopes: {
-      getAllSpots() {
-        return {
-          attributes: [
-            'id',
-            'ownerId',
-            'address',
-            'city',
-            'state',
-            'country',
-            'lat',
-            'lng',
-            'name',
-            'description',
-            'price',
-            'createdAt',
-            'updatedAt',
-            [
-              Sequelize.literal(
-                `(SELECT ROUND(AVG(stars), 1) FROM ${schema ? `"${schema}"."Reviews"` : 'Reviews'
-                } WHERE "Reviews"."spotId" = "Spot"."id")`
-              ),
-              'avgRating',
-            ],
-            [
-              Sequelize.literal(
-                `(SELECT url FROM ${schema ? `"${schema}"."SpotImages"` : 'SpotImages'
-                } WHERE "SpotImages"."spotId" = "Spot"."id" AND "SpotImages"."preview" = true LIMIT 1)`
-              ),
-              'previewImage',
-            ],
-          ],
-        };
-      },
-    }
+    modelName: 'Spot',
   
   });
-  return Spots;
-};
+  return Spot;
+  };

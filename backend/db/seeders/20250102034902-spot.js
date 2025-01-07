@@ -1,7 +1,7 @@
 'use strict';
 /** @type {import('sequelize-cli').Migration} */
 const { Op } = require('sequelize');
-const { Spots } = require('../models');
+const { Spot } = require('../models');
 
 let options = {};
 if (process.env.NODE_ENV === 'production') {
@@ -9,9 +9,10 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 module.exports = {
-  up: async (queryInterface, Sequelize) => {
-    options.tableName = 'Spots';
-    return queryInterface.bulkInsert(options, [
+  async up(queryInterface, Sequelize){
+    try {
+    
+    await Spot.bulkCreate([
       {
         ownerId: 1,
         address: '123 Disney Lane',
@@ -229,13 +230,22 @@ module.exports = {
         description: 'Expansive mansion with luxurious amenities and city views.',
         price: 8000.00,
       }
+    ], { validate: true });
+  } catch (error) {
+    console.error('Validation error:', error);
+  }
 
-    ], {});
+    
   },
 
   async down(queryInterface, Sequelize)  {
-    options.tableName = 'Spots';
-    const Op = Sequelize.Op;
-    await queryInterface.bulkDelete(options, {}, {});
-  }
-};
+    options.tableName = 'Spot';
+    return queryInterface.bulkDelete(options,{
+      id: { [Op.in]: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21]}
+    }, {});
+
+    
+    }  
+  };
+
+

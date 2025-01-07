@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Reviews extends Model {
+  class Review extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -11,38 +11,40 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Reviews.belongsTo(models.User, { foreignKey: 'userId' })
-      Reviews.belongsTo(models.Spots, { foreignKey: 'spotId' })
-      Reviews.hasMany(models.ReviewImage, { foreignKey: 'reviewId' })
+      Review.belongsTo(models.Spot, {
+        foreignKey: 'spotId'
+      })
+      Review.belongsTo(models.User, {
+        foreignKey: 'userId'
+      })
+
+      Review.hasMany(models.ReviewImage, {
+        foreignKey: 'reviewId',
+        onDelete: 'CASCADE',
+        hooks: true,
+      })
     }
   }
-  Reviews.init({
-    userId: {
-      type: DataTypes.INTEGER,
-      onDelete: "CASCADE",
-      allowNull: false
-    },
-    reviewId: {
-      type: DataTypes.INTEGER,
-      onDelete: "CASCADE",
-    },
-    url: {
-      type: DataTypes.STRING
-    },
+  Review.init({
     spotId: {
       type: DataTypes.INTEGER,
-      onDelete: "CASCADE",
+      allowNull: false
+    },
+    userId: {
+      type: DataTypes.INTEGER,
       allowNull: false
     },
     review: {
       type: DataTypes.STRING,
+      allowNull: false,
     },
     stars: {
-      type: DataTypes.DECIMAL
-    }
+      type: DataTypes.DECIMAL,
+      allowNull: false
+    },
   }, {
     sequelize,
-    modelName: 'Reviews',
+    modelName: 'Review',
   });
-  return Reviews;
+  return Review;
 };

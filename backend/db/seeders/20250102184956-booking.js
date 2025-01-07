@@ -1,5 +1,6 @@
 'use strict';
-
+const { Op } = require('sequelize');
+const { Booking } = require('../models');
 let options = {};
 if (process.env.NODE_ENV === "production") {
   options.schema = process.env.SCHEMA; // define your schema in options object
@@ -8,7 +9,7 @@ if (process.env.NODE_ENV === "production") {
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    options.tableName = "Bookings";
+    options.tableName = "Booking";
     return queryInterface.bulkInsert(
       options,
       [
@@ -97,7 +98,7 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    options.tableName = "Bookings";
+    options.tableName = "Booking";
     const Op = Sequelize.Op;
     return queryInterface.bulkDelete(
       options,
