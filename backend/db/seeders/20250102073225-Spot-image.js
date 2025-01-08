@@ -9,8 +9,9 @@ if (process.env.NODE_ENV === 'production') {
 
 module.exports = {
   async up(queryInterface, Sequelize)  {
-    options.tableName = 'SpotImage';
-    return queryInterface.bulkInsert(options, [
+    try {
+      
+    await SpotImage.bulkCreate( [
       {
         url: 'https://photos.zillowstatic.com/fp/2c985a3dabbb57a7436d6e2fe3f8240a-p_e.jpg',
         spotId: 1,
@@ -221,16 +222,19 @@ module.exports = {
         spotId: 18,
         preview: true,
       },
-    ], );
+    
+    ],{validate: true} );
+    } catch (error) {
+      console.error('Validation error:', error);
+    }
   },
-
   async down(queryInterface, Sequelize) {
     options.tableName = "SpotImage";
     const Op = Sequelize.Op;
-    return queryInterface.bulkDelete(
-      options,
-      null,
-      {}
-    );
-  },
-};
+    return queryInterface.bulkDelete(options,{
+      id: { [Op.in]: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21]}
+    }, {});
+
+    
+    }  
+  };
