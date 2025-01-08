@@ -14,6 +14,7 @@ module.exports = {
     
     await Spot.bulkCreate([
       {
+        id: 1,
         ownerId: 1,
         address: '123 Disney Lane',
         city: 'San Francisco',
@@ -26,6 +27,7 @@ module.exports = {
         price: 123.00,
       },
       {
+        id: 2,
         ownerId: 2,
         address: '5458 Beautiful St',
         city: 'Denver',
@@ -38,6 +40,7 @@ module.exports = {
         price: 455.00,
       },
       {
+        id: 3,
         ownerId: 3,
         address: '6482 Bronco Dr',
         city: 'Dallas',
@@ -50,6 +53,7 @@ module.exports = {
         price: 50.00,
       },
       {
+        id: 4,
         ownerId: 3,
         address: '4444 Urban Blvd',
         city: 'New York',
@@ -62,6 +66,7 @@ module.exports = {
         price: 5000.00,
       },
       {
+        id: 5,
         ownerId: 2,
         address: '3333 Forest Rd',
         city: 'Portland',
@@ -74,6 +79,7 @@ module.exports = {
         price: 450.00,
       },
       {
+        id: 6,
         ownerId: 3,
         address: '2222 Sunny Ave',
         city: 'San Diego',
@@ -87,6 +93,7 @@ module.exports = {
 
       },
       {
+        id: 7,
         ownerId: 3,
         address: '1111 Mainly St',
         city: 'Las Vegas',
@@ -99,6 +106,7 @@ module.exports = {
         price: 789.00,
       },
       {
+        id: 8,
         ownerId: 1,
         address: '6666 Mountain View Dr',
         city: 'Denver',
@@ -111,6 +119,7 @@ module.exports = {
         price: 2500.00,
       },
       {
+        id: 9,
         ownerId: 1,
         address: '7777 Bayfront Ct',
         city: 'Miami',
@@ -123,6 +132,7 @@ module.exports = {
         price: 950.00,
       },
       {
+        id: 10,
         ownerId: 1,
         address: '8888 Prairie St',
         city: 'Dallas',
@@ -135,6 +145,7 @@ module.exports = {
         price: 1100.00,
       },
       {
+        id: 11,
         ownerId: 1,
         address: '3333 Forest Rd',
         city: 'Portland',
@@ -147,6 +158,7 @@ module.exports = {
         price: 450.00,
       },
       {
+        id: 12,
         ownerId: 2,
         address: '4444 Urban Blvd',
         city: 'New York',
@@ -158,7 +170,7 @@ module.exports = {
         description: 'Luxurious city living with stunning skyline views.',
         price: 5000.00,
       },
-      {
+      {id: 13,
         ownerId: 2,
         address: '5555 Desert Ln',
         city: 'Phoenix',
@@ -171,6 +183,7 @@ module.exports = {
         price: 1500.00,
       },
       {
+        id: 14,
         ownerId: 2,
         address: '1313 Alpine Dr',
         city: 'Salt Lake City',
@@ -182,7 +195,7 @@ module.exports = {
         description: 'Rustic lodge perfect for winter getaways and skiing adventures.',
         price: 1800.00,
       },
-      {
+      {id: 15,
         ownerId: 2,
         address: '1414 Harbor St',
         city: 'Seattle',
@@ -195,6 +208,7 @@ module.exports = {
         price: 1200.00,
       },
       {
+        id: 16,
         ownerId: 2,
         address: '1515 Vineyard Ln',
         city: 'Napa',
@@ -207,6 +221,7 @@ module.exports = {
         price: 3000.00,
       },
       {
+        id: 17,
         ownerId: 2,
         address: '1616 Parkside Dr',
         city: 'San Francisco',
@@ -219,6 +234,7 @@ module.exports = {
         price: 2200.00,
       },
       {
+        id: 18,
         ownerId: 2,
         address: '1717 Sunset Blvd',
         city: 'Los Angeles',

@@ -10,6 +10,8 @@ const { User } = require('../../db/models');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 
+const { requireAuth } = require("../../utils/auth");
+
 //It is a validation middleware.validating user input during the login process,
 const validateLogin = [
     check('credential')//check(field)-- a string or an array of strings of field names to validate against.
@@ -30,14 +32,7 @@ router.post(
     async (req, res, next) => {
       const { credential, password } = req.body;
   
-      const user = await User.unscoped().findOne({
-        where: {
-          [Op.or]: {
-            username: credential,
-            email: credential
-          }
-        }
-      });
+      const user = await User.login({ credential, password });
   
       if (!user || !bcrypt.compareSync(password, user.hashedPassword.toString())) {
         const err = new Error('Login failed');
@@ -47,18 +42,12 @@ router.post(
         return next(err);
       }
   
-      const safeUser = {//add firstName&lastName after adding new columns
-        id: user.id,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-        username: user.username,
-      };
+     
 
       await setTokenCookie(res, safeUser);
 
       return res.json({
-        user: safeUser
+        user: user
       });
     }
 );
@@ -76,25 +65,42 @@ router.delete(
 // Restore session user
 //check if req.user exist or not; import restoreUser middleware const {restoreUser } = require('../../utils/auth');, req.user is inside;
 router.get(
-    '/',
-    (req, res) => {
-      const { user } = req;
-      if (user) {
-        const safeUser = {
-          id: user.id,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          email: user.email,
-          username: user.username,
-        };
-        return res.json({
-          user: safeUser
-        });
-      } else return res.json({ user: null });//f there is not a session, it will return a JSON with an empty object. 
+  '/:currentUser', requireAuth, async(req, res, next) => {
+    try {
+        const {user} = req
+        if (user) {
+            return res.json({
+                currentUser: user
+            })
+        }
+    } catch{
+        // res.status(404)
+        const err = new Error('User not found')
+        err.statusCode = 404
+        next(err)
     }
-  );
 
 
+})
+
+
+
+//error middleware
+router.use((err, req, res, next) => {
+  res.status = err.statusCode || 500
+  res.send({
+      error: err
+  })
+})
+
+router.get("/", restoreUser, (req, res) => {
+const { user } = req;
+if (user) {
+  return res.json({
+    user: user.toSafeObject(),
+  });
+} else return res.json({ user: null });
+});
 
 
 

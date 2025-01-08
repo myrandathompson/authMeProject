@@ -9,23 +9,25 @@ if (process.env.NODE_ENV === "production") {
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    options.tableName = "Review";
-    return queryInterface.bulkInsert(
-      options,
+    try {
+      await Review.bulkCreate(
       [
         {
+          id: 1,
           spotId: 1,
           userId: 3,
           review: "Close to Disneyland!",
           stars: 5,
         },
         {
+          id: 2,
           spotId: 2,
           userId: 3,
           review: "Gross",
           stars: 2,
         },
         {
+          id: 3,
           spotId: 1,
           userId: 2,
           review:
@@ -33,15 +35,18 @@ module.exports = {
           stars: 5,
         },
         {
+          id: 4,
           spotId: 2,
           userId: 1,
           review: "Disgusting",
           stars: 3,
         },
-      ],
-      {}
-    );
-  },
+    
+      ],{validate: true} );
+      } catch (error) {
+        console.error('Validation error:', error);
+      }
+    },
 
   async down(queryInterface, Sequelize) {
     options.tableName = "Review";

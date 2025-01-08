@@ -74,7 +74,7 @@ router.get('/current', requireAuth, async (req, res, next) => {
 
   let result = {};
 
-  result.Reviews = reviewsArr;
+  result.Review = reviewsArr;
 
   res.json(result);
 })

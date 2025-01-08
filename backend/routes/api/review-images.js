@@ -1,42 +1,44 @@
 const express = require("express");
-const { Review, ReviewImage } = require("../../db/models");
+// const { Review, ReviewImage } = require("../../db/models");
 const { requireAuth } = require("../../utils/auth.js");
-
+// const { setTokenCookie, requireAuth } = require("../../utils/auth");
 const router = express.Router();
 
-//Delete a Review Image
-router.delete("/:imageId", requireAuth, async (req, res, next) => {
-    const { imageId } = req.params;
 
-    try {
-        const reviewImage = await ReviewImage.findByPk(imageId, {
-            include: {
-                model: Review,
-                as: "Review",
-                attributes: ["userId"],
-            },
-        });
+const {
+    Spot,
+    User,
+    SpotImage,
+    Review,
+    ReviewImage,
+    Booking,
+    sequelize,
+  } = require("../../db/models");
+  const { Op } = require("sequelize");
 
-        if (!reviewImage) {
-            return res.status(404).json({
-                message: "Review Image couldn't be found",
-            });
-        }
-
-        if (reviewImage.Review.userId !== req.user.id) {
-            return res.status(403).json({
-                message: "You are not authorized to delete this review image",
-            });
-        }
-
-        await reviewImage.destroy();
-
-        res.status(200).json({
-            message: "Successfully deleted",
-        });
-    } catch (error) {
-        next(error);
+  router.delete("/:imageId", requireAuth, async (req, res, next) => {
+    let image = await ReviewImage.findByPk(req.params.imageId, {
+      include: { model: Review },
+    });
+    //if spot id doesn't exist throw error
+    if (!image) {
+      const err = new Error("Spot Image couldn't be found");
+      err.status = 404;
+      next(err);
     }
-});
-
+  
+    //check current user is owner of spot associated with image
+    let userIdNum = image.toJSON().Review.userId;
+  
+    if (userIdNum !== req.user.id) {
+      res.status(400);
+      return res.json({ message: "Must be the reviewer to delete Image" });
+    }
+  
+    //delete image
+    await image.destroy();
+    return res.json({
+      message: "Successfully deleted",
+    });
+  });
 module.exports = router;

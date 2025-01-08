@@ -1,51 +1,57 @@
 'use strict';
 
-/** @type {import('sequelize-cli').Migration} */
 const { Op } = require('sequelize');
-const { User } = require('../models');
-const bcrypt = require("bcryptjs");
+const bcrypt = require('bcryptjs');
 
 let options = {};
 if (process.env.NODE_ENV === 'production') {
-  options.schema = process.env.SCHEMA;  // define your schema in options object
+  options.schema = process.env.SCHEMA;  // Define your schema in options object
 }
 
 module.exports = {
-  async up (queryInterface, Sequelize) {
+  up: async (queryInterface, Sequelize) => {
     try {
-      await User.bulkCreate([
-      {
-        email: 'demo@user.io',
-        firstName: 'FakeName',
-        lastName: 'FakeLast',
-        username: 'Demo-lition',
-        hashedPassword: bcrypt.hashSync('password')
-      },
-      {
-        email: 'user1@user.io',
-        firstName: 'FakeNamea',
-        lastName: 'FakeLasta',
-        username: 'FakeUser1',
-        hashedPassword: bcrypt.hashSync('password2')
-      },
-      {
-        email: 'user2@user.io',
-        firstName: 'FakeNameb',
-        lastName: 'FakeLastb',
-        username: 'FakeUser2',
-        hashedPassword: bcrypt.hashSync('password3')
-      }
-    ], { validate: true });
-  } catch (error) {
-    console.error('Validation error:', error);
-  }
- },
+      await queryInterface.bulkInsert('User', [
+        {
+          id: 1,
+          email: 'demo@user.io',
+          firstName: 'FakeName',
+          lastName: 'FakeLast',
+          username: 'Demo-lition',
+          hashedPassword: bcrypt.hashSync('password'),
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          id: 2,
+          email: 'user1@user.io',
+          firstName: 'FakeNamea',
+          lastName: 'FakeLasta',
+          username: 'FakeUser1',
+          hashedPassword: bcrypt.hashSync('password2'),
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          id: 3,
+          email: 'user2@user.io',
+          firstName: 'FakeNameb',
+          lastName: 'FakeLastb',
+          username: 'FakeUser2',
+          hashedPassword: bcrypt.hashSync('password3'),
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+      ], { validate: true });
+    } catch (error) {
+      console.error('Validation error:', error);
+    }
+  },
 
- async down (queryInterface, Sequelize) {
-   options.tableName = 'User';
-   const Op = Sequelize.Op;
-   return queryInterface.bulkDelete(options, {
-     username: { [Op.in]: ['Demo-lition', 'FakeUser1', 'FakeUser2'] }
-   }, {});
- }
+  down: async (queryInterface, Sequelize) => {
+    options.tableName = 'User';
+    return queryInterface.bulkDelete(options, {
+      username: { [Op.in]: ['Demo-lition', 'FakeUser1', 'FakeUser2'] },
+    });
+  },
 };
