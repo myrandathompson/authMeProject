@@ -9,9 +9,8 @@ if (process.env.NODE_ENV === "production") {
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    options.tableName = "Booking";
-    return queryInterface.bulkInsert(
-      options,
+    try {
+      await Booking.bulkCreate(
       [
         {
           spotId: 1,
@@ -92,18 +91,20 @@ module.exports = {
           startDate: new Date("2025-04-17"),
           endDate: new Date("2025-04-27"),
         },
-      ],
-      {}
-    );
-  },
+    
+      ],{validate: true} );
+      } catch (error) {
+        console.error('Validation error:', error);
+      }
+    },
 
-  async down(queryInterface, Sequelize) {
-    options.tableName = "Booking";
+  async down(queryInterface, Sequelize)  {
+    options.tableName = 'Booking';
     const Op = Sequelize.Op;
-    return queryInterface.bulkDelete(
-      options,
-      null,
-      {}
-    );
-  },
-};
+    return queryInterface.bulkDelete(options,{
+      id: { [Op.in]: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21]}
+    }, {});
+
+    
+    }  
+  };
