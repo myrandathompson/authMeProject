@@ -39,36 +39,24 @@ module.exports = (sequelize, DataTypes) => {
     username: {
       type: DataTypes.STRING,
       allowNull: false,
-      validate: {
-        len: [4, 30],
-        isNOTEmail(value) {
-          if (Validator.isEmail(value)) {
-            throw new Error("Cannot be an email")
-          }
-        }
-      }
+      unique: true,
     },
     email: {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
-      validate: {
-        len: [3, 256],
-        isEmail: true
-      }
     },
     hashedPassword: 
     {
       type: DataTypes.STRING.BINARY,
       allowNull: false,
-    
     }
   }, {
     sequelize,
     modelName: 'User',
     defaultScope: {
       attributes: {
-        exclude: ['hashedPassword','email','createdAt','updatedAt']//my note: query could only have id,username, firstName, lastName info
+        exclude: ['hashedPassword','email','createdAt','updatedAt']
       }
     }
   });

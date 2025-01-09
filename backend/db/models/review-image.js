@@ -22,8 +22,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       onDelete: 'CASCADE',
       references: {
-        model: 'Review',
-        key: 'id',
+        model: 'Review'
       }
     },
     url: {
