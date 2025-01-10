@@ -8,7 +8,7 @@ if (process.env.NODE_ENV === 'production') {
 
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Spot', {
+    await queryInterface.createTable('Spots', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -19,8 +19,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: { 
-          model: 'User' ,
-          key: 'id'
+          model: 'Users' 
         },
         onDelete: 'CASCADE',
       },
@@ -73,7 +72,6 @@ module.exports = {
     }, options);
   },
   async down(queryInterface, Sequelize) {
-    options.tableName = 'Spot'
-    await queryInterface.dropTable('Spot');
+    await queryInterface.dropTable('Spots', options);
   }
 };

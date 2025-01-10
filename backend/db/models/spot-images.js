@@ -1,4 +1,5 @@
 'use strict';
+
 const {
   Model,
   Sequelize
@@ -14,7 +15,6 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       SpotImage.belongsTo(models.Spot, {
         foreignKey: 'spotId',
-        onDelete: 'CASCADE'
       });
     }
   }
@@ -22,10 +22,6 @@ module.exports = (sequelize, DataTypes) => {
     spotId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references: { 
-        model: 'Spot',
-        key: 'id',
-      },
       onDelete: 'CASCADE', 
     },
     url: {

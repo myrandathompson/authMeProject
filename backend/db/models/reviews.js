@@ -1,4 +1,5 @@
 'use strict';
+
 const {
   Model
 } = require('sequelize');
@@ -20,8 +21,6 @@ module.exports = (sequelize, DataTypes) => {
 
       Review.hasMany(models.ReviewImage, {
         foreignKey: 'reviewId',
-        onDelete: 'CASCADE',
-        hooks: true,
       })
     }
   }
@@ -29,19 +28,11 @@ module.exports = (sequelize, DataTypes) => {
     spotId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references: {
-        model: 'spot',
-        key: 'id',
-      },
       onDelete: 'CASCADE',
     },
     userId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references: {
-        model: 'User',
-        key: 'id',
-      },
       onDelete: 'CASCADE',
     },
     review: {
