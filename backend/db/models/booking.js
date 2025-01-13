@@ -1,10 +1,7 @@
 'use strict';
-
 const {
   Model
 } = require('sequelize');
-
-
 module.exports = (sequelize, DataTypes) => {
   class Booking extends Model {
     /**
@@ -14,12 +11,14 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-     Booking.belongsTo(models.Spot, {
-      foreignKey: 'spotId'
-     })
-     Booking.belongsTo(models.User, {
-      foreignKey: 'userId'
-     })
+      Booking.belongsTo(models.Spot, {
+        foreignKey: 'spotId',
+        onDelete: 'CASCADE'
+      });
+      Booking.belongsTo(models.User, {
+        foreignKey: 'userId',
+        onDelete: 'CASCADE'
+      });
     }
   }
   Booking.init({
@@ -27,7 +26,8 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: 'Spots'
+        model: 'Spot',
+        key: 'id',
       },
       onDelete: 'CASCADE',
     },
@@ -35,10 +35,29 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: 'Users'
+        model: 'User',
+        key: 'id',
       },
       onDelete: 'CASCADE',
     },
+    // spotId: {
+    //   type: DataTypes.INTEGER,
+    //   allowNull: false,
+    //   references: {
+    //     model: 'Spots',
+    //     key: 'id'
+    //   },
+    //   onDelete: 'CASCADE',
+    // },
+    // userId: {
+    //   type: DataTypes.INTEGER,
+    //   allowNull: false,
+    //   references: {
+    //     model: 'Users',
+    //     key: 'id'
+    //   },
+    //   onDelete: 'CASCADE'
+    // },
     startDate: {
       type: DataTypes.DATE,
       allowNull: false

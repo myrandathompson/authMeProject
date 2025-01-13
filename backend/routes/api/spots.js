@@ -10,7 +10,7 @@ const { Op } = require("sequelize");
 
 router.get('/current', requireAuth, async (req, res, next) => {
   let yourSpots = await Spot.findAll({
-    where: {ownerId: req.user.id}
+    where: {userId: req.user.id}
   })
   let spotsList = []
   let previewImgArr = []
@@ -80,13 +80,13 @@ router.get('/:spotId/bookings', requireAuth, async (req, res, next) => {
    }
 
   //if not owner of the spot, they can see only booking start and end time and spotid
-  let ownerIdObj = await Spot.findByPk(req.params.spotId, {
-    attributes: ["ownerId"],
+  let userIdObj = await Spot.findByPk(req.params.spotId, {
+    attributes: ["userId"],
   });
 
-  let ownerIdNum = ownerIdObj.toJSON().ownerId;
+  let userIdNum = userIdObj.toJSON().userId;
 
-  if (ownerIdNum !== req.user.id) {
+  if (userIdNum !== req.user.id) {
 
     let Bookings = await Booking.findAll({
       where: { spotId: req.params.spotId },
@@ -131,13 +131,13 @@ router.post('/:spotId/bookings', requireAuth, async (req, res, next) => {
   }
 
   //spot CANNOT belong to current user
-  let ownerIdObj = await Spot.findByPk(req.params.spotId, {
-    attributes: ["ownerId"],
+  let userIdObj = await Spot.findByPk(req.params.spotId, {
+    attributes: ["userId"],
   });
 
-  let ownerIdNum = ownerIdObj.toJSON().ownerId;
+  let userIdNum = userIdObj.toJSON().userId;
 
-  if (ownerIdNum === req.user.id) {
+  if (userIdNum === req.user.id) {
     res.status(403);
     return res.json({ message: "Owners cannot make booking to their own spot" });
   }
@@ -337,13 +337,13 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
 
 
   //spot must belong to current user
-  let ownerIdObj = await Spot.findByPk(req.params.spotId, {
-    attributes: ["ownerId"]
+  let userIdObj = await Spot.findByPk(req.params.spotId, {
+    attributes: ["userId"]
   })
 
-  let ownerIdNum = ownerIdObj.toJSON().ownerId;
+  let userIdNum = userIdObj.toJSON().userId;
 
-  if (ownerIdNum !== req.user.id) {
+  if (userIdNum !== req.user.id) {
       res.status(400);
       return res.json({ message: "Must be owner of Spot to post image" });
   }
@@ -371,13 +371,13 @@ router.put('/:spotId', async (req, res, next) => {
   }
 
   //Must be owner of spot in order to update spot
-  let ownerIdObj = await Spot.findByPk(req.params.spotId, {
-    attributes: ["ownerId"],
+  let userIdObj = await Spot.findByPk(req.params.spotId, {
+    attributes: ["userId"],
   });
 
-  let ownerIdNum = ownerIdObj.toJSON().ownerId;
+  let userIdNum = userIdObj.toJSON().userId;
 
-  if (ownerIdNum !== req.user.id) {
+  if (userIdNum !== req.user.id) {
     res.status(400);
     return res.json({ message: "Must be owner of Spot to update spot" });
   }
@@ -390,7 +390,7 @@ router.put('/:spotId', async (req, res, next) => {
   delete finalSpot.updatedAt
   delete finalSpot.createdAt;
   delete finalSpot.id;
-  delete finalSpot.ownerId;
+  delete finalSpot.userId;
 
 
 
@@ -409,13 +409,13 @@ router.delete('/:spotId', requireAuth, async (req, res, next) => {
   }
 
   //Must be owner of spot in order to update spot
-  let ownerIdObj = await Spot.findByPk(req.params.spotId, {
-    attributes: ["ownerId"],
+  let userIdObj = await Spot.findByPk(req.params.spotId, {
+    attributes: ["userId"],
   });
 
-  let ownerIdNum = ownerIdObj.toJSON().ownerId;
+  let userIdNum = userIdObj.toJSON().userId;
 
-  if (ownerIdNum !== req.user.id) {
+  if (userIdNum !== req.user.id) {
     res.status(400);
     return res.json({ message: "Must be owner of Spot to delete spot" });
   }
@@ -474,7 +474,7 @@ router.get('/:spotId', async (req, res, next) => {
 router.post('/', requireAuth, async (req, res) => {
 
   const newSpot = await Spot.create({
-    ownerId: req.user.id,
+    userId: req.user.id,
     ...req.body
   })
 

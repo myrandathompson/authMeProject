@@ -1,31 +1,40 @@
 'use strict';
+const {
+  Model
+} = require('sequelize');
+const { DataTypes } = require('sequelize');
+const { Op } = require("sequelize");
 
-const { Model, Validator } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
-     /**
-         * Helper method for defining associations.
-         * This method is not a part of Sequelize lifecycle.
-         * The `models/index` file will call this method automatically.
-         */
-     static associate(models) {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate(models) {
       // define association here
       User.hasMany(models.Spot, {
-          foreignKey: "ownerId",
-          as: "spots",
-          onDelete: "CASCADE",
+        foreignKey: 'userId',
+        onDelete: "CASCADE",
       });
+      // User.hasMany(models.Review, {
+      //   foreignKey: 'userId',
+      //   onDelete: "CASCADE",
+      // });
+      // User.hasMany(models.Booking, {
+      //   foreignKey: 'userId',
+      //   onDelete: "CASCADE",
+      // });
       User.hasMany(models.Booking, {
-          foreignKey: "userId",
-          as: "bookings",
-          onDelete: "CASCADE",
+        foreignKey: "userId",
+        onDelete: "CASCADE",
       });
       User.hasMany(models.Review, {
-          foreignKey: "userId",
-          as: "reviews",
-          onDelete: "CASCADE",
+        foreignKey: "userId",
+        onDelete: "CASCADE",
       });
-  }
+    }
   }
   User.init({
     firstName: {
@@ -45,25 +54,25 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
-    },
+    },     
     hashedPassword: {
       type: DataTypes.STRING.BINARY,
-      allowNull: false,
+      allowNull:false,
     }
   }, {
     sequelize,
-            modelName: "User",
-            defaultScope: {
-                attributes: {
-                    exclude: [
-                        "hashedPassword",
-                        "email",
-                        "createdAt",
-                        "updatedAt",
-                    ],
+    modelName: 'User',
+    defaultScope: {
+      attributes: {
+          exclude: [
+              "hashedPassword",
+              "email",
+              "createdAt",
+              "updatedAt",
+          ],
 
-      }
-    }
+}
+}
   });
   return User;
 };

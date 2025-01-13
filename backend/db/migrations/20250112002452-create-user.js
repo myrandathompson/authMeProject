@@ -6,13 +6,14 @@ if (process.env.NODE_ENV === 'production') {
 }
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up(queryInterface, Sequelize)  {
+  up: async(queryInterface, Sequelize) => {
     await queryInterface.createTable('Users', {
       id: {
-        type: Sequelize.INTEGER,
+        allowNull: false,
+        autoIncrement: true,
         primaryKey: true,
-        autoIncrement: true, 
-      },
+        type: Sequelize.INTEGER
+      },  
       firstName: {
         type: Sequelize.STRING(30),
         allowNull: false,
@@ -29,7 +30,7 @@ module.exports = {
       email: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: true,
+        unique: true
       },
       hashedPassword: {
         type: Sequelize.STRING.BINARY,
@@ -47,8 +48,7 @@ module.exports = {
       },
     }, options);
   },
-
-  async down(queryInterface, Sequelize)  {
+  down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable('Users', options);
   }
 };

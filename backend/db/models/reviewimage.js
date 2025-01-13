@@ -1,5 +1,4 @@
 'use strict';
-
 const {
   Model
 } = require('sequelize');
@@ -11,21 +10,26 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
       ReviewImage.belongsTo(models.Review, {
-        foreignKey: 'reviewId'
-      })
+        foreignKey: 'reviewId',
+        onDelete: 'CASCADE'
+      });
+      // define association here
     }
   }
   ReviewImage.init({
     reviewId: {
       type: DataTypes.INTEGER,
-      allowNull: false,
       onDelete: 'CASCADE',
+      references: {
+        model: 'Review',
+        key: 'id'
+      },
+      allowNull: false, 
     },
     url: {
-      type: DataTypes.STRING,
-    } 
+      type: DataTypes.STRING
+    },
   }, {
     sequelize,
     modelName: 'ReviewImage',

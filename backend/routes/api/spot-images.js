@@ -25,7 +25,7 @@ router.delete('/:imageId', requireAuth, async (req, res, next) => {
     next(err);
   }
     //check current user is owner of spot associated with image
-    let userIdNum = image.toJSON().Spot.ownerId;
+    let userIdNum = image.toJSON().Spot.userId;
 
     if (userIdNum !== req.user.id) {
       res.status(400);

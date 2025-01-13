@@ -1,5 +1,4 @@
 'use strict';
-
 const {
   Model
 } = require('sequelize');
@@ -12,28 +11,38 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Review.belongsTo(models.Spot, {
-        foreignKey: 'spotId'
-      })
-      Review.belongsTo(models.User, {
-        foreignKey: 'userId'
-      })
-
       Review.hasMany(models.ReviewImage, {
         foreignKey: 'reviewId',
-      })
+        onDelete: 'CASCADE'
+      });
+      Review.belongsTo(models.Spot, {
+        foreignKey: 'spotId',
+        onDelete: 'CASCADE'
+      });
+      Review.belongsTo(models.User, {
+        foreignKey: 'userId',
+        onDelete: 'CASCADE'
+      });
     }
   }
   Review.init({
     spotId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      onDelete: 'CASCADE',
+      references: {
+        model: 'Spot',
+        key: 'id'
+      },
+      onDelete: 'CASCADE'
     },
     userId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      onDelete: 'CASCADE',
+      references: {
+        model: 'User',
+        key: 'id',
+      },
+      onDelete: 'CASCADE'
     },
     review: {
       type: DataTypes.STRING,
@@ -41,7 +50,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     stars: {
       type: DataTypes.DECIMAL,
-      allowNull: false
+      allowNull: false,
     },
   }, {
     sequelize,
