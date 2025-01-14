@@ -7,7 +7,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.bulkInsert('Users', [
+    await queryInterface.bulkInsert('User', [
       {
         id: 1,
         firstName: 'FakeName',
@@ -52,7 +52,7 @@ module.exports = {
 
   async down (queryInterface, Sequelize) {
     const Op = Sequelize.Op;
-    return queryInterface.bulkDelete('Users', {
+    return queryInterface.bulkDelete('User', {
       username: { [Op.in]: ['Demo-lition', 'FakeUser1', 'FakeUser2'] },
     });
     /**
