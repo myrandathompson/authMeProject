@@ -7,7 +7,8 @@ if (process.env.NODE_ENV === 'production') {
 }
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.bulkInsert('SpotImages', [
+    options.tableName = 'SpotImages';
+    await queryInterface.bulkInsert(options, [
       {
         url: 'https://photos.zillowstatic.com/fp/2c985a3dabbb57a7436d6e2fe3f8240a-p_e.jpg',
         spotId: 1,
@@ -84,7 +85,7 @@ module.exports = {
       {
         spotId: { [Op.in]: [1, 2, 3, 4, 5] }, // Filter by `spotId` dynamically
       },
-      {}
+     
     );
-  },
+  }
 };
