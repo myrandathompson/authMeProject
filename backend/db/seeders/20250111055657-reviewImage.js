@@ -1,15 +1,15 @@
 'use strict';
-/** @type {import('sequelize-cli').Migration} */
 const { Op } = require('sequelize');
-
+const bcrypt = require('bcryptjs');
 let options = {};
 if (process.env.NODE_ENV === 'production') {
-  options.schema = process.env.SCHEMA; // Define your schema in the options object
+  options.schema = process.env.SCHEMA; // Define schema in production
 }
 
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.bulkInsert('ReviewImages', [
+    options.tableName = 'ReviewImages'
+    await queryInterface.bulkInsert(options, [
       {
         reviewId: 1,
         url: "https://www.arhomes.com/wp-content/uploads/2022/11/Dawning_OptionalPool-Dusk.webp",
@@ -66,12 +66,13 @@ module.exports = {
 
   async down(queryInterface, Sequelize) {
     options.tableName = 'ReviewImages'; // Set the table name
+    const Op = Sequelize.Op;
     return queryInterface.bulkDelete(
       options,
       {
         reviewId: { [Op.in]: [1, 2, 3] }, // Filter by `reviewId` for a more dynamic approach
       },
-      {}
+      
     );
-  },
+  }
 };

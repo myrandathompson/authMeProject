@@ -1,16 +1,14 @@
 'use strict';
-
-/** @type {import('sequelize-cli').Migration} */
 const { Op } = require('sequelize');
-
+const bcrypt = require('bcryptjs');
 let options = {};
 if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA; // Define schema in production
 }
-
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.bulkInsert('Reviews', [
+    options.tableName = 'Reviews';
+    await queryInterface.bulkInsert(options, [
       {
         spotId: 1,
         userId: 3,
@@ -57,12 +55,13 @@ module.exports = {
 
   async down(queryInterface, Sequelize) {
     options.tableName = 'Reviews'; // Specify the table name
+    const Op = Sequelize.Op;
     return queryInterface.bulkDelete(
       options,
       {
         review: { [Op.in]: ["Close to Disneyland!", "Gross", "Loved it", "Disgusting"] },
       },
-      {}
+      
     );
-  },
+  }
 };
