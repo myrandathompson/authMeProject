@@ -5,6 +5,7 @@ const { User } = require('../../db/models');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 
+const bcrypt = require("bcryptjs");
 
 
 // backend/routes/api/users.js
