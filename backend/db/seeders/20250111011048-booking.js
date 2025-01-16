@@ -8,7 +8,7 @@ if (process.env.NODE_ENV === 'production') {
 module.exports = {
   async up(queryInterface, Sequelize) {
     options.tableName = 'Bookings'
-    await queryInterface.bulkInsert(options, [
+    return queryInterface.bulkInsert(options, [
       {
         spotId: 1,
         userId: 3,
@@ -101,12 +101,11 @@ module.exports = {
 
   async down(queryInterface, Sequelize) {
     options.tableName = 'Booking'; // Set the table name
+    const Op = Sequelize.Op;
     return queryInterface.bulkDelete(
       options,
       {
         startDate: { [Op.between]: [new Date("2025-01-01"), new Date("2025-12-31")] }, // Dynamic cleanup
-      },
-    
-    );
+      }, {});
   }
 };

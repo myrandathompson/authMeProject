@@ -9,7 +9,7 @@ if (process.env.NODE_ENV === 'production') {
 module.exports = {
   async up(queryInterface, Sequelize) {
     options.tableName = 'ReviewImages'
-    await queryInterface.bulkInsert(options, [
+    return queryInterface.bulkInsert(options, [
       {
         reviewId: 1,
         url: "https://www.arhomes.com/wp-content/uploads/2022/11/Dawning_OptionalPool-Dusk.webp",
@@ -70,9 +70,7 @@ module.exports = {
     return queryInterface.bulkDelete(
       options,
       {
-        reviewId: { [Op.in]: [1, 2, 3] }, // Filter by `reviewId` for a more dynamic approach
-      },
-      
-    );
+        reviewId: { [Op.in]: [1, 2, 3, 4] }, // Filter by `reviewId` for a more dynamic approach
+      }, {});
   }
 };

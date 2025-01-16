@@ -8,7 +8,7 @@ if (process.env.NODE_ENV === 'production') {
 module.exports = {
   async up(queryInterface, Sequelize) {
     options.tableName = 'Reviews';
-    await queryInterface.bulkInsert(options, [
+    return queryInterface.bulkInsert(options, [
       {
         spotId: 1,
         userId: 3,
@@ -60,8 +60,6 @@ module.exports = {
       options,
       {
         review: { [Op.in]: ["Close to Disneyland!", "Gross", "Loved it", "Disgusting"] },
-      },
-      
-    );
+      },{});
   }
 };

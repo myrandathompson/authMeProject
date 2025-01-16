@@ -8,7 +8,7 @@ if (process.env.NODE_ENV === 'production') {
 module.exports = {
   async up(queryInterface, Sequelize) {
     options.tableName = 'SpotImages';
-    await queryInterface.bulkInsert(options, [
+    return queryInterface.bulkInsert(options, [
       {
         url: 'https://photos.zillowstatic.com/fp/2c985a3dabbb57a7436d6e2fe3f8240a-p_e.jpg',
         spotId: 1,
@@ -80,12 +80,11 @@ module.exports = {
 
   async down(queryInterface, Sequelize) {
     options.tableName = 'SpotImages'; // Define table name
+    const Op = Sequelize.Op;
     return queryInterface.bulkDelete(
       options,
       {
-        spotId: { [Op.in]: [1, 2, 3, 4, 5] }, // Filter by `spotId` dynamically
-      },
-     
-    );
+        spotId: { [Op.in]: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18] }, // Filter by `spotId` dynamically
+      }, {});
   }
 };
