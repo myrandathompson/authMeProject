@@ -1,13 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const { setTokenCookie, requireAuth } = require("../../utils/auth");
+const { setTokenCookie, requireAuth } = require('../../utils/auth');
+// const { Booking } = require('../../db/models');
+const { check } = require('express-validator');
+const { handleValidationErrors } = require('../../utils/validation');
+
 const {Booking, Spot, SpotImage, Review, User, ReviewImage, } = require('../../db/models')
-const { requireAuth } = require ('../../utils/auth');
-const {check} = require('express-validator');
-const {handleValidationErrors} = require('../../utils/validation');
-const { Op } = require('sequelize');
-
-
 //Get all of the Current User's Bookings
 router.get('/current', requireAuth, async(req,res)=> {
     let bookings = await Booking.findAll({

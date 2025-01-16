@@ -1,19 +1,19 @@
 const express = require("express");
 const { Review, ReviewImage } = require("../../db/models");
-const { requireAuth } = require("../../utils/auth.js");
+// const { requireAuth } = require("../../utils/auth.js");
 const { setTokenCookie, requireAuth } = require("../../utils/auth");
 const router = express.Router();
 
 
-const {
-    Spot,
-    User,
-    SpotImage,
-    Review,
-    ReviewImage,
-    Booking,
-    sequelize,
-  } = require("../../db/models");
+// const {
+//     Spot,
+//     User,
+//     SpotImage,
+//     Review,
+//     ReviewImage,
+//     Booking,
+//     sequelize,
+//   } = require("../../db/models");
   const { Op } = require("sequelize");
 
   router.delete("/:imageId", requireAuth, async (req, res, next) => {
