@@ -248,7 +248,7 @@ Returns all the spots.
       "Spots": [
         {
           "id": 1,
-          "ownerId": 1,
+          "userId": 1,
           "address": "123 Disney Lane",
           "city": "San Francisco",
           "state": "California",
@@ -288,7 +288,7 @@ Returns all the spots owned (created) by the current user.
       "Spots": [
         {
           "id": 1,
-          "ownerId": 1,
+          "userId": 1,
           "address": "123 Disney Lane",
           "city": "San Francisco",
           "state": "California",
@@ -326,7 +326,7 @@ Returns the details of a spot specified by its id.
     ```json
     {
       "id": 1,
-      "ownerId": 1,
+      "userId": 1,
       "address": "123 Disney Lane",
       "city": "San Francisco",
       "state": "California",
@@ -407,7 +407,7 @@ Creates and returns a new spot.
     ```json
     {
       "id": 1,
-      "ownerId": 1,
+      "userId": 1,
       "address": "123 Disney Lane",
       "city": "San Francisco",
       "state": "California",
@@ -527,7 +527,7 @@ Updates and returns an existing spot.
     ```json
     {
       "id": 1,
-      "ownerId": 1,
+      "userId": 1,
       "address": "123 Disney Lane",
       "city": "San Francisco",
       "state": "California",
@@ -648,7 +648,7 @@ Returns all the reviews written by the current user.
           },
           "Spot": {
             "id": 1,
-            "ownerId": 1,
+            "userId": 1,
             "address": "123 Disney Lane",
             "city": "San Francisco",
             "state": "California",
@@ -987,7 +987,7 @@ Return all the bookings that the current user has made.
           "spotId": 1,
           "Spot": {
             "id": 1,
-            "ownerId": 1,
+            "userId": 1,
             "address": "123 Disney Lane",
             "city": "San Francisco",
             "state": "California",
@@ -1401,7 +1401,7 @@ Return spots filtered by query parameters.
       "Spots": [
         {
           "id": 1,
-          "ownerId": 1,
+          "userId": 1,
           "address": "123 Disney Lane",
           "city": "San Francisco",
           "state": "California",
