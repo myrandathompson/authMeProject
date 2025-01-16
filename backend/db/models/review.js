@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Review.hasMany(models.ReviewImage, {
-        foreignKey: 'reviewId',
+        primaryKey: true,
         onDelete: 'CASCADE'
       });
       Review.belongsTo(models.Spot, {
@@ -31,7 +31,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       references: {
         model: 'Spots',
-        key: 'id'
+        // key: 'id'
       },
       onDelete: 'CASCADE'
     },
@@ -40,7 +40,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       references: {
         model: 'Users',
-        key: 'id',
+        // key: 'id',
       },
       onDelete: 'CASCADE'
     },
