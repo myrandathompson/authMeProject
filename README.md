@@ -99,7 +99,7 @@ information.
 
     ```json
     {
-      "credential": "john.smith@gmail.com",
+      "username": "firstaatester",
       "password": "secret password"
     }
     ```
@@ -158,7 +158,7 @@ user's information.
 * Require Authentication: false
 * Request
   * Method: POST
-  * Route path: /api/user
+  * Route path: /api/users
   * Headers:
     * Content-Type: application/json
   * Body:

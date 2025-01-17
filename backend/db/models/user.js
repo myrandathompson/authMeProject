@@ -2,8 +2,8 @@
 const {
   Model
 } = require('sequelize');
-// const { DataTypes } = require('sequelize');
-// const { Op } = require("sequelize");
+const bcrypt = require('bcryptjs'); // Add bcrypt for password hashing
+const { Op } = require('sequelize'); // Add Op for OR queries
 
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
@@ -18,14 +18,6 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'userId',
         onDelete: "CASCADE",
       });
-      // User.hasMany(models.Review, {
-      //   foreignKey: 'userId',
-      //   onDelete: "CASCADE",
-      // });
-      // User.hasMany(models.Booking, {
-      //   foreignKey: 'userId',
-      //   onDelete: "CASCADE",
-      // });
       User.hasMany(models.Booking, {
         foreignKey: "userId",
         onDelete: "CASCADE",
@@ -35,7 +27,36 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: "CASCADE",
       });
     }
+
+    /**
+     * Login method for user authentication.
+     */
+    static async login({ credential, password }) {
+      const user = await User.findOne({
+        where: {
+          [Op.or]: {
+            username: credential,
+            email: credential,
+          }
+        },
+        attributes: { include: ['hashedPassword'] } // Include hashedPassword in the query
+      });
+    
+      if (user && bcrypt.compareSync(password, user.hashedPassword.toString())) {
+        return user;
+      }
+      return null;
+    }
+    
+    /**
+     * Safe object representation for user instance.
+     */
+    toSafeObject() {
+      const { id, username, email, firstName, lastName } = this; // only return safe fields
+      return { id, username, email, firstName, lastName };
+    }
   }
+
   User.init({
     firstName: {
       type: DataTypes.STRING(30),
@@ -57,7 +78,7 @@ module.exports = (sequelize, DataTypes) => {
     },     
     hashedPassword: {
       type: DataTypes.STRING.BINARY,
-      allowNull:false,
+      allowNull: false,
     }
   }, {
     sequelize,
@@ -70,9 +91,8 @@ module.exports = (sequelize, DataTypes) => {
               "createdAt",
               "updatedAt",
           ],
-
-}
-}
+      },
+    },
   });
   return User;
 };
