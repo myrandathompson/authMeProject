@@ -1,85 +1,76 @@
-const express = require("express");
+// backend/routes/api/session.js
+const express = require('express')
+const { setTokenCookie, restoreUser, requireAuth } = require('../../utils/auth');
+const { User } = require('../../db/models');
+const { check } = require('express-validator');
+const { handleValidationErrors } = require('../../utils/validation');
+
 const router = express.Router();
-const bcrypt = require("bcryptjs");
-const { setTokenCookie, requireAuth } = require("../../utils/auth");
-const { User } = require("../../db/models");
 
-const { check } = require("express-validator");
-const { handleValidationErrors } = require("../../utils/validation");
-
-const validateSignup = [
-  check("firstName")
-    .exists({ checkFalsy: true })
-    .withMessage("First Name cannot be empty."),
-  check("lastName")
-    .exists({ checkFalsy: true })
-    .withMessage("Last Name cannot be empty."),
-  check("email")
-    .exists({ checkFalsy: true })
-    .isEmail()
-    .withMessage("Please provide a valid email."),
-  check("username")
-    .exists({ checkFalsy: true })
-    .isLength({ min: 4 })
-    .withMessage("Please provide a username with at least 4 characters."),
-  check("username").not().isEmail().withMessage("Username cannot be an email."),
-  check("password")
-    .exists({ checkFalsy: true })
-    .isLength({ min: 6 })
-    .withMessage("Password must be 6 characters or more."),
-  handleValidationErrors,
+const validateLogin = [
+    check('credential')
+        .exists({ checkFalsy: true })
+        .isLength({ min: 4 })
+        .withMessage('Email or username is required'),
+    check('password')
+        .exists({ checkFalsy: true })
+        .isLength({ min: 6 })
+        .withMessage('Password is required'),
+    handleValidationErrors
 ];
 
-// Sign up
+
 router.post(
-  '/',
-  validateSignup,
-  async (req, res) => {
-    const { email, password, username, firstName, lastName } = req.body;
+    '/',
+    validateLogin,
+    async (req, res, next) => {
+      const { credential, password } = req.body;
 
-    const emailUser = await User.findOne({
-      where: { email }
-    });
+      const user = await User.login({ credential, password });
 
-    const usernameUser = await User.findOne({
-      where: { username }
-    });
-
-    const errors = {};
-
-    if (emailUser) {
-      errors.email = "User with that email already exists";
+      if (!user) {
+        const err = new Error('Invalid credentials');
+        err.status = 401;
+        err.title = 'Login failed';
+        err.errors = ['The provided credentials were invalid.'];
+        return res.status(401).json({
+          message: err.message,
+          statusCode: err.status,
+          errors: err.errors
+        })
+      }
+      else {
+        await setTokenCookie(res, user);
+        const { id, username, email, firstName, lastName } = user
+        return res.json({
+          user: { id, username, email, firstName, lastName }
+        });
+      }
     }
+  );
 
-    if (usernameUser) {
-      errors.username = 'User with that username already exists';
+
+router.delete(
+    '/',
+    (_req, res) => {
+        res.clearCookie('token');
+        return res.json({ message: 'success' });
     }
-
-    if (emailUser || usernameUser) {
-      return res.status(500).json({
-        message: 'User already exists',
-        errors
-      });
-    }
-
-
-    const hashedPassword = bcrypt.hashSync(password);
-    const user = await User.create({ email, username, hashedPassword, firstName, lastName });
-
-    const safeUser = {
-      id: user.id,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
-      username: user.username,
-    };
-
-    await setTokenCookie(res, safeUser);
-
-    return res.status(201).json({
-      user: safeUser
-    });
-  }
 );
+
+router.get(
+    '/',
+    restoreUser,
+    (req, res) => {
+        const { user } = req;
+
+        if (user) {
+            return res.json({
+                user: user.toSafeObject()
+            });
+        } else return res.json({});
+    }
+);
+
 
 module.exports = router;

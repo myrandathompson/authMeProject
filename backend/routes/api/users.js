@@ -67,14 +67,13 @@ router.post(
     const user = await User.create({ email, username, hashedPassword, firstName, lastName });
 
     const safeUser = {
-      id: user.id,
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
       username: user.username,
     };
 
-    await setTokenCookie(res, safeUser);
+    // await setTokenCookie(res, safeUser);
 
     return res.status(201).json({
       user: safeUser
