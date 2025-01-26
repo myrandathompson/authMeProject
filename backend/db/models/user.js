@@ -7,6 +7,10 @@ const { Op } = require('sequelize'); // Add Op for OR queries
 
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
+    toSafeObject() {
+      const { id, username, email } = this; // Only expose safe fields
+      return { id, username, email };
+  }
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.

@@ -34,11 +34,11 @@ const requireAuth = (req, _res, next) => {
         message: "Authentication required"
     });
 
-    // const err = new Error('Unauthorized');
-    // err.title = 'Unauthorized';
-    // err.errors = ['Unauthorized'];
-    // err.status = 401;
-    // return next(err);
+    const err = new Error('Unauthorized');
+    err.title = 'Unauthorized';
+    err.errors = ['Unauthorized'];
+    err.status = 401;
+    return next(err);
 };
 // Middleware to restore user from JWT
 const restoreUser = async (req, res, next) => {
