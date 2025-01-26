@@ -234,7 +234,7 @@ Returns all the spots.
 * Require Authentication: false
 * Request
   * Method: GET
-  * Route path: /api/session/spots
+  * Route path: /api/spots
   * Body: none
 
 * Successful Response

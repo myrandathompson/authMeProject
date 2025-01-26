@@ -1,76 +1,90 @@
-// backend/routes/api/session.js
-const express = require('express')
-const { setTokenCookie, restoreUser, requireAuth } = require('../../utils/auth');
+// backend/routes/api/users.js
+const express = require('express');
+const { setTokenCookie } = require('../../utils/auth');
 const { User } = require('../../db/models');
-const { check } = require('express-validator');
-const { handleValidationErrors } = require('../../utils/validation');
+const { check, validationResult } = require('express-validator');
 
 const router = express.Router();
 
-const validateLogin = [
-    check('credential')
+// Validation middleware
+const validateSignup = [
+    check('email')
+        .exists({ checkFalsy: true })
+        .isEmail()
+        .withMessage('Invalid email'),
+    check('username')
         .exists({ checkFalsy: true })
         .isLength({ min: 4 })
-        .withMessage('Email or username is required'),
+        .withMessage('Username is required'),
+    check('firstName')
+        .exists({ checkFalsy: true })
+        .withMessage('First Name is required'),
+    check('lastName')
+        .exists({ checkFalsy: true })
+        .withMessage('Last Name is required'),
     check('password')
         .exists({ checkFalsy: true })
         .isLength({ min: 6 })
-        .withMessage('Password is required'),
-    handleValidationErrors
+        .withMessage('Password must be at least 6 characters long'),
+    (req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({
+                message: 'Bad Request',
+                errors: errors.array().reduce((acc, error) => {
+                    acc[error.param] = error.msg;
+                    return acc;
+                }, {})
+            });
+        }
+        next();
+    }
 ];
 
+// POST /api/users - Sign up a new user
+router.post('/', validateSignup, async (req, res, next) => {
+    const { email, username, password, firstName, lastName } = req.body;
 
-router.post(
-    '/',
-    validateLogin,
-    async (req, res, next) => {
-      const { credential, password } = req.body;
+    try {
+        // Check for existing user with the same email or username
+        const existingEmail = await User.findOne({ where: { email } });
+        const existingUsername = await User.findOne({ where: { username } });
 
-      const user = await User.login({ credential, password });
-
-      if (!user) {
-        const err = new Error('Invalid credentials');
-        err.status = 401;
-        err.title = 'Login failed';
-        err.errors = ['The provided credentials were invalid.'];
-        return res.status(401).json({
-          message: err.message,
-          statusCode: err.status,
-          errors: err.errors
-        })
-      }
-      else {
-        await setTokenCookie(res, user);
-        const { id, username, email, firstName, lastName } = user
-        return res.json({
-          user: { id, username, email, firstName, lastName }
-        });
-      }
-    }
-  );
-
-
-router.delete(
-    '/',
-    (_req, res) => {
-        res.clearCookie('token');
-        return res.json({ message: 'success' });
-    }
-);
-
-router.get(
-    '/',
-    restoreUser,
-    (req, res) => {
-        const { user } = req;
-
-        if (user) {
-            return res.json({
-                user: user.toSafeObject()
+        if (existingEmail || existingUsername) {
+            return res.status(500).json({
+                message: 'User already exists',
+                errors: {
+                    ...(existingEmail && { email: 'User with that email already exists' }),
+                    ...(existingUsername && { username: 'User with that username already exists' })
+                }
             });
-        } else return res.json({});
-    }
-);
+        }
 
+        // Create a new user
+        const newUser = await User.signup({
+            email,
+            username,
+            password,
+            firstName,
+            lastName
+        });
+
+        // Set the JWT cookie
+        setTokenCookie(res, newUser);
+
+        // Return the user's information
+        return res.status(201).json({
+            user: {
+                id: newUser.id,
+                firstName: newUser.firstName,
+                lastName: newUser.lastName,
+                email: newUser.email,
+                username: newUser.username
+            }
+        });
+    } catch (error) {
+        next(error); // Pass unexpected errors to the error handler
+    }
+});
 
 module.exports = router;

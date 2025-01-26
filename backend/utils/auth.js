@@ -1,10 +1,8 @@
-// backend/utils/auth.js
 const jwt = require('jsonwebtoken');
 const { jwtConfig } = require('../config');
 const { User } = require('../db/models');
 
 const { secret, expiresIn } = jwtConfig;
-
 
 // Sends a JWT Cookie
 const setTokenCookie = (res, user) => {
@@ -22,48 +20,58 @@ const setTokenCookie = (res, user) => {
         maxAge: expiresIn * 1000, // maxAge in milliseconds
         httpOnly: true,
         secure: isProduction,
-        sameSite: isProduction && "Lax"
+        sameSite: "Lax", // Always use Lax for security
     });
 
     return token;
 };
+// Middleware to require authentication
+const requireAuth = (req, _res, next) => {
+    if (req.user) return next(); // Check for req.user, not req.User
 
 
-const restoreUser = (req, res, next) => {
-    // token parsed from cookies
+    return _res.status(401).json({
+        message: "Authentication required"
+    });
+
+    // const err = new Error('Unauthorized');
+    // err.title = 'Unauthorized';
+    // err.errors = ['Unauthorized'];
+    // err.status = 401;
+    // return next(err);
+};
+// Middleware to restore user from JWT
+const restoreUser = async (req, res, next) => {
     const { token } = req.cookies;
-    req.user = null;
+    req.user = null; // Default to null
 
-    return jwt.verify(token, secret, null, async (err, jwtPayload) => {
+    if (!token) {
+        return next();
+    }
+
+    jwt.verify(token, secret, null, async (err, jwtPayload) => {
         if (err) {
+            res.clearCookie('token');
             return next();
         }
 
         try {
             const { id } = jwtPayload.data;
-            req.user = await User.scope('currentUser').findByPk(id);
+            const user = await User.scope('currentUser').findByPk(id);
+
+            if (user) {
+                req.user = user; // Attach user to req
+            } else {
+                res.clearCookie('token');
+            }
         } catch (e) {
             res.clearCookie('token');
-            return next();
         }
-
-        if (!req.user) res.clearCookie('token');
 
         return next();
     });
 };
 
-
-// If there is no current user, return an error
-const requireAuth = function (req, _res, next) {
-    if (req.user) return next();
-
-    const err = new Error('Unauthorized');
-    err.title = 'Unauthorized';
-    err.errors = ['Unauthorized'];
-    err.status = 401;
-    return next(err);
-}
 
 
 module.exports = { setTokenCookie, restoreUser, requireAuth };
