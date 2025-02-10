@@ -5,14 +5,19 @@ const SET_USER = 'session/setUser';
 const REMOVE_USER = 'session/removeUser';
 
 // Action Creators
-const setUser = (user) => ({
-  type: SET_USER,
+const setUser = (user) => {
+  return {
+    type: SET_USER,
   payload: user,
-});
+  };
+};
 
-// const removeUser = () => ({
-//   type: REMOVE_USER,
-// });
+// const removeUser = () => {
+//   return {
+//     type: REMOVE_USER,
+//   }
+  
+// };
 
 // Thunk Action: Log In
 export const login = ({ credential, password }) => async (dispatch) => {
