@@ -1,0 +1,188 @@
+#create-spot-form-parent-div {
+    width: 350px;
+    text-align: center;
+}
+
+.form-section-desc-text {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    text-align: left;
+}
+
+.form-section-header-text {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    text-align: left;
+}
+
+.form-title-text {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 20px;
+    text-align: left;
+}
+
+#form-section-one, #form-section-two {
+    border-bottom: 2px solid #999999;
+    margin-bottom: 10px;
+}
+
+#lat-lng-div {
+    margin-bottom: 15px;
+}
+
+#city-state-labels {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 5px;
+}
+
+#city-state-labels > div {
+    width: 50%;
+    display: inline-block;
+    vertical-align: top;
+}
+
+#form-country-input, #form-street-address-input, #city-input, #state-input, #lat-input, #lng-input {
+    width: 340px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    background-color: #e8f0fe;
+}
+
+#city-input {
+    width: 350px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+
+#state-input {
+    width: 110px;
+    margin-left: 5px;
+    margin-bottom: 5px;
+}
+
+#city-state-div {
+    display: flex;
+    justify-content: space-between;
+    width: 350px;
+}
+
+#state-label {
+    text-align: left;
+    width: auto; 
+    min-width: 60px;
+    
+}
+
+#create-spot-form-parent-div #city-state-labels .create-form-errors-text:last-child {
+    margin-left: 24px;  /* Adjust this value as needed */
+}
+
+
+#lat-lng-labels {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 5px;
+}
+#country-label {
+    width: 225px;
+    text-align: left;
+}
+
+#section-one-country, #section-one-streetAddress {
+    width: 346px;
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 5px;
+}
+
+#lat-lng-labels {
+    width: 350px;
+}
+
+#lng-label {
+    text-align: left;
+    width: 42%;
+}
+
+.comma-span {
+    margin-top: 5px;
+    font-weight: 400;
+}
+
+#lat-input {
+    width: 180px;
+}
+
+#lng-input {
+    width: 140px;
+}
+
+
+#form-description-input {
+    width: 344px;
+    height: 100px;
+    margin-bottom: 15px;
+    background-color: #e8f0fe;
+
+}
+
+#form-section-three, #form-section-four, #form-section-five {
+    border-bottom: 2px solid #999999;
+    margin-bottom: 10px;
+
+}
+
+#spot-name-input {
+    width: 344px;
+    margin-bottom: 15px;
+    background-color: #e8f0fe;
+}
+
+#spot-price-input {
+    width: 330px;
+    margin-bottom: 15px;
+    background-color: #e8f0fe;
+}
+
+#section-five-photo-inputs {
+    display: flex;
+    flex-direction: column;
+    width: 330px;
+}
+
+.form-img-input, .form-preview-img-input {
+    width: 330px;
+    background-color: #e8f0fe;
+    margin-bottom: 10px;
+}
+
+#final-img-input {
+    margin-bottom: 15px;
+}
+
+#new-spot-form-submit-button {
+    background-color: #ff5a5f;
+    color: white;
+    box-shadow: 2px 2px 2px black;
+    height: 30px;
+}
+
+
+.create-form-errors-text {
+    color: red;
+    padding: 0;
+    margin-top: 0px;
+}
+
+.create-form-errors-text {
+    color: red;
+    margin: 5px 0;
+    font-size: 0.8em;  /* Adjusting the font size for error messages */
+}
+
+#city-and-state-parent-div {
+    margin-bottom: 10px;
+}

@@ -1,0 +1,149 @@
+#booking-header-text {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+#booking-component-parent-div {
+    background-color: white;
+    margin-top: 30px;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+#booking-reserve-buttons-parent {
+    width: 200px;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    margin-top: 20px;
+    margin-left: 96px;
+}
+
+abbr {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+}
+
+.react-calendar__month-view__weekdays__weekday {
+    margin: 3px;
+}
+
+#start-date-calendar-button, #end-date-calendar-button {
+    height: 50px;
+    width: 175px;
+    background-color: white;
+    border: none;
+    padding-top: 6px;
+}
+
+#start-date-calendar-button {
+    border-right: 2px solid lightgray;
+}
+
+#top-row-button-div {
+    background-color: white;
+    display: flex;
+    border-left: 2px solid lightgray;
+    border-right: 2px solid lightgray;
+    border-top: 2px solid lightgray;
+    border-radius: 5px 5px 0 0;
+    margin-bottom: 0;
+}
+
+#check-in-text-span, #check-out-text-span {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    margin-bottom: 0;
+    padding-bottom: 0;
+    padding-top: 4px;
+    margin-top: 5px;
+}
+
+#check-in-p-tag, #check-out-p-tag {
+    padding-top: 0;
+    margin-top: 4px;
+}
+
+#bottom-row-button-div {
+    border: 2px solid lightgray;
+    height: 35px;
+    width: 350px;
+    font-family: 'Montserrat', sans-serif;
+    text-align: center;
+    padding-top: 15px;
+    margin-bottom: 10px;
+    border-radius: 0 0 5px 5px;
+}
+
+#guests-input-label {
+    margin-right: 5px;
+}
+
+#calendar-menu-dropdown-one, #calendar-menu-dropdown-two {
+    margin-top: 15px;
+    width: 250px;
+}
+
+.react-calendar__navigation__arrow.react-calendar__navigation__prev2-button,
+.react-calendar__navigation__arrow.react-calendar__navigation__prev-button {
+    background-color: white;
+    border: 2px solid #80808b;
+    border-radius: 8px;
+    margin-right: 4px;
+}
+
+.react-calendar__navigation__arrow.react-calendar__navigation__next2-button,
+.react-calendar__navigation__arrow.react-calendar__navigation__next-button {
+    background-color: white;
+    border: 2px solid #80808b;
+    border-radius: 8px;
+    margin-left: 4px;
+}
+
+.react-calendar__navigation__label {
+    background-color: white;
+    border: 2px solid #80808b;
+    border-radius: 8px;
+    margin-right: 2px;
+    margin-left: 2px;
+}
+
+.react-calendar__tile {
+    background-color: white;
+    border: 2px solid #80808b;
+    border-radius: 8px;
+    margin: 6px;
+}
+
+#confirm-booking-button, #cancel-booking-button {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    color: white;
+    background-color: #800000; /* Changed to a maroon color */
+    width: 120px;
+    height: 30px;
+}
+
+#confirm-or-cancel-booking {
+    display: flex;
+    justify-content: space-around;
+    width: 260px;
+    margin-top: 15px;
+}
+
+.react-calendar__month-view__days {
+    width: 275px;
+}
+
+#calendar-menu-dropdown-div {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-items: center;
+}
+
+#cost-per-night {
+    padding-left: 5px; /* Added to increase spacing */
+}
