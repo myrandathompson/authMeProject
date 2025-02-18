@@ -113,7 +113,7 @@ function CreateSpotForm() {
        return (
         <div id='create-spot-form-parent-div'>
             <h1 className='form-title-text'>Create a new Spot</h1>
-            <h2 className='form-section-header-text'>Where's your place located?</h2>
+            <h2 className='form-section-header-text'>Where is your place located?</h2>
             <p className='form-section-desc-text'>Guests will only get your exact address once they book a reservation.</p>
             <form id='create-new-spot-form' onSubmit={handleSubmit}>
                 <div id='form-section-one'>
