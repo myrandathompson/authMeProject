@@ -1,0 +1,67 @@
+.spot-card-hidden {
+    visibility: hidden;
+}
+
+.tooltip-span-hidden {
+    visibility: hidden;
+}
+
+.tooltip-span-visible {
+    visibility: visible;
+    position: absolute;
+    z-index: 2;
+    width: 100px;
+    color: white;
+    font-size: 12px;
+    background-color: #192733;
+    border-radius: 10px;
+    padding: 10px 15px 10px 15px;
+}
+
+img {
+    height: 160px;
+    width: 208px;
+    border-radius: 10px;
+    margin-top: 0;
+    justify-self: flex-start;
+}
+
+#spot-info-div {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-items: space-between;
+    height: 65px;
+}
+
+#city-state-text {
+    font-size: 12px;
+    color: black;
+    width: 155px;
+    margin-top: 5px;
+}
+
+#price-text {
+    color: black;
+    font-size: 14px;
+    width: 120%;
+    margin-top: 0px;
+}
+
+#rating-icon-div {
+    margin-left: 2px;
+    font-size: 14px;
+    width: 58%;
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 0;
+    margin-top: 4px;
+    color: black;
+}
+
+span {
+    font-weight: bold;
+}
+
+#prev-img-tab {
+    margin-top: 0;
+}

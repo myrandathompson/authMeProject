@@ -1,40 +1,31 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import "./index.css";
-import { Provider } from "react-redux";
-import { BrowserRouter } from "react-router-dom";
-import App from "./App";
-import { ModalProvider } from "./context/Modal";
+import { createStore, combineReducers, applyMiddleware, compose } from "redux";
+import thunk from "redux-thunk";
+import sessionReducer from "./session";
+import spotsReducer from "./spots";
+import reviewsReducer from "./reviews";
+import spotImagesReducer from "./spotimages";
 
-import configureStore from "./store";
-import { restoreCSRF, csrfFetch } from "./store/csrf";
-import * as sessionActions from "./store/session";
+const rootReducer = combineReducers({
+  // add reducer functions here
+  session: sessionReducer,
+  spots: spotsReducer,
+  reviews: reviewsReducer,
+  spotImgs: spotImagesReducer,
+});
 
-const store = configureStore();
+let enhancer;
 
-if (process.env.NODE_ENV !== "production") {
-  restoreCSRF();
-
-  window.csrfFetch = csrfFetch;
-  window.store = store;
-  window.sessionActions = sessionActions;
+if (process.env.NODE_ENV === "production") {
+  enhancer = applyMiddleware(thunk);
+} else {
+  const logger = require("redux-logger").default;
+  const composeEnhancers =
+    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+  enhancer = composeEnhancers(applyMiddleware(thunk, logger));
 }
 
-function Root() {
-  return (
-    <Provider store={store}>
-      <ModalProvider>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </ModalProvider>
-    </Provider>
-  );
-}
+const configureStore = (preloadedState) => {
+  return createStore(rootReducer, preloadedState, enhancer);
+};
 
-ReactDOM.render(
-  <React.StrictMode>
-    <Root />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+export default configureStore;

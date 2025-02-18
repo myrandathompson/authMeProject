@@ -1,5 +1,17 @@
 import { useModal } from '../../context/Modal';
 
+
+// const Greeting = () => {
+//     return (
+//       <OpenModalButton
+//         buttonText="Greeting"
+//         modalComponent={<h2>Hello World!</h2>}
+//         onButtonClick={() => console.log("Greeting initiated")}
+//         onModalClose={() => console.log("Greeting completed")}
+//       />
+//     );
+//   };
+
 function OpenModalButton({
   modalComponent, // component to render inside the modal
   buttonText, // text of the button that opens the modal
@@ -17,15 +29,6 @@ function OpenModalButton({
   return <button onClick={onClick}>{buttonText}</button>;
 }
 
-const Greeting = () => {
-    return (
-      <OpenModalButton
-        buttonText="Greeting"
-        modalComponent={<h2>Hello World!</h2>}
-        onButtonClick={() => console.log("Greeting initiated")}
-        onModalClose={() => console.log("Greeting completed")}
-      />
-    );
-  };
+
 
 export default OpenModalButton;

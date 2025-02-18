@@ -1,0 +1,56 @@
+#manage-spots-parent-container {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+    width: 1000px;
+    height: 800px;
+}
+
+
+#manage-spots-title-text {
+    justify-self: flex-start;
+    font-family: 'Montserrat', sans-serif;
+    margin-left: 40px;
+}
+
+#manage-spots-show-parent-div {
+    width: 1000px;
+    height: 800px;
+    display: flex;
+    flex-direction: column;
+    margin-top: 0px;
+}
+
+
+#manage-spot-buttons {
+    width: 210px;
+    display: flex;
+    justify-content: flex-start;
+    margin-left: 40px;
+}
+
+#manage-spots-update-button, #manage-spots-delete-button {
+    font-family: 'Montserrat', sans-serif;
+    color: white;
+    background-color: #666666;
+    width: 105px;
+    height: 30px;
+    margin-right: 5px;
+    margin-top: 5px;
+}
+
+#manage-spots-create-new-button {
+    background-color: #666666;
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    margin-left: 40px;
+}
+
+#spacer-div {
+    height: 100%;
+}
+
+#individual-card-manage-spots {
+    width: 28%;
+    height: 300px;
+}

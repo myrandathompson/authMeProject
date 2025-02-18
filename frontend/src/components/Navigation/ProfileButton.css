@@ -1,0 +1,95 @@
+.profile-dropdown {
+    background-color: white;
+    padding: 10px;
+    border: 1px solid #DBDBDB;
+    height: 155px;
+    display: flex;
+    flex-direction: column;
+    margin-top: 12px;
+    position: absolute;
+    margin-bottom: 2px;
+    right: 10px;
+    list-style-type: none;
+    justify-self: flex-end;
+    z-index: 2;
+    box-shadow: 0 2px 5px rgba(0,0,0,.1);
+}
+
+.profile-dropdown > li {
+    width: fit-content;
+}
+
+.profile-dropdown-hidden {
+    display: none;
+}
+
+.profile-icon-button {
+    border: 1px solid transparent;
+    border-radius: 10px;
+    background-color: white;
+}
+
+#user-name-info {
+    font-size: 12px;
+    height: 15px;
+    margin-top: 4px;
+}
+
+#user-username-info {
+    border-bottom: 2px solid #DBDBDB;
+    font-size: 12px;
+    height: 15px;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    padding-bottom: 4px;
+}
+
+#user-email-info {
+    font-size: 12px;
+    height: 20px;
+    margin-top: 4px;
+    border-bottom: 2px solid #DBDBDB;
+}
+
+.logout-profile-button {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+    font-size: 11px;
+    color: white;
+    width: 70px;
+    height: 30px;
+    border: 1px solid black;
+    background-color: #872D30; /* Updated color to darker red */
+    margin-top: 8px;
+    margin-bottom: 2px;
+    border-radius: 40px;
+    align-self: center;
+}
+
+#logout-div {
+    align-self: center;
+}
+
+.dropdown-menu-list {
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+}
+
+.dropdown-menu-list > li {
+    text-align: center;
+    padding-bottom: 0;
+}
+
+#manage-spots-div {
+    margin-top: 3px;
+    padding-bottom: 3px;
+    border-bottom: 2px solid #DBDBDB;
+}
+
+.manage-spots-button {
+    border: none;
+    background-color: #872D30; /* Updated color to darker red */
+    font-family: 'Montserrat', sans-serif;
+    color: white; /* Changed text color to white for contrast */
+}

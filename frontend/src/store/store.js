@@ -1,9 +1,9 @@
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import {thunk} from 'redux-thunk';
 import sessionReducer from './session';
-import spotReducer from './spot';
-import reviewReducer from './review';
-import spotImageReducer from './spotImage'
+import spotReducer from './spots';
+import reviewReducer from './reviews';
+import spotImageReducer from './spotImages'
 import reviewImageReducer from './reviewImage'
 import bookingReducer from './booking';
 

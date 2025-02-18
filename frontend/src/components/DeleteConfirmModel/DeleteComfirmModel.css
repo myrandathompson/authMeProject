@@ -1,0 +1,43 @@
+#confirm-delete-modal-parent {
+    width: 400px;
+}
+
+#confirm-delete-modal-text {
+    margin-right: 15px;
+    margin-left: 15px;
+}
+
+#confirm-delete-title-text {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    font-size: 25px;
+    text-align: center;
+}
+
+#confirm-delete-p-text {
+    font-family: 'Montserrat', sans-serif;
+}
+
+#delete-spot-yes-button-div, #delete-spot-no-button-div {
+    margin-right: 15px;
+    margin-left: 15px;
+    margin-bottom: 10px;
+}
+
+#delete-spot-confirm-yes-button, #delete-spot-confirm-no-button {
+    width: 100%;
+    height: 50px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    color: white;
+    border: 2px solid black;
+    box-shadow: 3px 2px 2px black;
+}
+
+#delete-spot-confirm-yes-button {
+    background-color: #ff5a5f;
+}
+
+#delete-spot-confirm-no-button {
+    background-color: #666666;
+}

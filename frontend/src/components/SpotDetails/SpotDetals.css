@@ -1,0 +1,199 @@
+body {
+    max-width: 1024px;
+    margin-top: 60px;
+    overflow-y: scroll;
+    height: fit-content;
+}
+
+#parent-nav-div {
+    z-index: 2;
+}
+
+#spot-details-parent-div {
+    z-index: 0;
+    margin-top: 30px;
+    left: 40px;
+    right: 40px;
+    width: fit-content;
+    height: fit-content;
+    position: absolute;
+    padding-bottom: 40px;
+}
+
+#preview-image-main {
+    width: 425px;
+    height: 400px;
+}
+
+.other-spot-img {
+    height: 195px;
+    width: 250px;
+    margin: 2px;
+    justify-self: flex-start;
+}
+
+#title-div {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+#spot-images-div {
+    display: flex;
+    width: 948px;
+    height: 400px;
+}
+
+#preview-img-div {
+    width: 850px;
+    height: 400px;
+    margin-right: 10px;
+}
+
+#other-spot-images {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+    width: 1100px;
+}
+
+#optional-img-one {
+    justify-self: flex-start;
+    height: 198px;
+}
+
+#optional-img-two, #optional-img-three, #optional-img-four {
+    height: 198px;
+}
+
+#hosted-by-and-description {
+    display: flex;
+    height: 200px;
+    width: 950px;
+    border-bottom: 2px solid black;
+}
+
+#info-text {
+    width: 60%;
+    border: 1px solid transparent;
+}
+
+#booking-and-price-div {
+    border: 1px solid black;
+    border-radius: 5px;
+    width: 410px;
+    height: 70%;
+    margin-right: 8px;
+    margin-top: 5px;
+    margin-left: 0;
+}
+
+#cost-and-review-info {
+    display: flex;
+    margin-top: 5px;
+}
+
+#cost-per-night {
+    width: 48%;
+    display: flex;
+    align-items: flex-end;
+    padding-left: 15px; /* Added to increase spacing */
+    font-size: 20px;
+    margin-left: 20px;
+}
+
+#review-icon-and-rating {
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-top: 8px;
+    padding-right: 8px;
+    padding-bottom: 10px;
+    font-size: 16px;
+    margin-right: 20px;
+}
+
+#all-reviews-div {
+    margin-top: 40px;
+    height: 200px;
+}
+
+#all-reviews-header-container > i {
+    margin-right: 20px;
+    padding-right: 25px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+#reserve-button-inner {
+    background-color: #800000; /* Updated to a darker red */
+    color: white;
+    height: 50px;
+    align-content: center;
+    box-shadow: 2px 2px 2px black;
+    width: 350px;
+}
+
+#reserve-button {
+    display: flex;
+    flex-direction: column;
+    height: fit-content;
+    align-items: center;
+}
+
+#reviews-header-container {
+    margin-top: 10px;
+}
+
+span {
+    font-size: 18px;
+}
+
+.spot-review {
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+
+.review-user-name {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 15px;
+    margin-bottom: 5px;
+}
+
+.review-month-year {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    color: #999999;
+    margin-top: 0;
+}
+
+.review-inner-text {
+    font-family: 'Montserrat', sans-serif;
+}
+
+#be-first-to-post-review {
+    font-family: 'Montserrat', sans-serif;
+    color: white;
+    background-color: #666666;
+}
+
+#review-button-parent-div {
+    margin-top: 20px;
+}
+
+#all-reviews-div {
+    margin-bottom: 30px;
+    height: fit-content;
+}
+
+.modal-buttons {
+    font-family: 'Montserrat', sans-serif;
+    color: white;
+    background-color: #666666;
+    width: 130px;
+    height: 30px;
+}
+
+#star-favicon {
+    margin-right: 5px;
+}
