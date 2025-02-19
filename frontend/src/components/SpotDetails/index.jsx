@@ -179,9 +179,11 @@ function SpotDetails() {
                     {reviewButton}
                     </div>
                     {sortedReviews && sortedReviews.map((review) => (
-                        <div className='spot-review'>
+                        <div className='spotReview' key={review.id}>  {/* ✅ Add key prop */}
                             <h3 className='review-user-name'>{review.User.firstName}</h3>
-                            <h3 className='review-month-year'>{review.createdAt = new Date().toDateString().split(' ')[1]} {review.createdAt = new Date().toDateString().split(' ')[3]}</h3>
+                            <h3 className='review-month-year'>
+                                {new Date(review.createdAt).toDateString().split(' ')[1]} {new Date(review.createdAt).toDateString().split(' ')[3]}
+                            </h3>
                             <p className='review-inner-text'>{review.review}</p>
                             {(sessionUser && review.userId === sessionUser.id) ? (
                                 <div id='delete-review-button-div'>
@@ -193,6 +195,7 @@ function SpotDetails() {
                             ) : ''}
                         </div>
                     ))}
+
                 </div>
             </div>
         )}
